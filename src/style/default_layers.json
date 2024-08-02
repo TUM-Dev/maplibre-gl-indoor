@@ -33,7 +33,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "indoor",
             "level"
         ],
@@ -62,7 +62,7 @@
         "type": "fill",
         "source": "indoor",
         "filter": [
-            "filter-==",
+            "==",
             "leisure",
             "garden"
         ],
@@ -88,7 +88,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "amenity",
             "parking"
         ],
@@ -115,7 +115,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "amenity",
             "parking"
         ],
@@ -142,7 +142,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "indoor",
             "corridor"
         ],
@@ -181,7 +181,7 @@
                 ]
             ],
             [
-                "filter-==",
+                "==",
                 "railway",
                 "platform"
             ]
@@ -210,7 +210,7 @@
         "filter": [
             "any",
             [
-                "filter-==",
+                "==",
                 "indoor",
                 "room"
             ]
@@ -238,7 +238,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "indoor",
             "area"
         ],
@@ -266,7 +266,7 @@
         "filter": [
             "all",
             [
-                "filter-==",
+                "==",
                 "highway",
                 "pedestrian"
             ],
@@ -300,7 +300,7 @@
         "filter": [
             "all",
             [
-                "filter-==",
+                "==",
                 "highway",
                 "pedestrian"
             ],
@@ -335,12 +335,12 @@
         "filter": [
             "all",
             [
-                "filter-==",
+                "==",
                 "indoor",
                 "area"
             ],
             [
-                "filter-==",
+                "==",
                 "balcony",
                 "yes"
             ]
@@ -369,17 +369,17 @@
         "filter": [
             "any",
             [
-                "filter-==",
+                "==",
                 "stairs",
                 "yes"
             ],
             [
-                "filter-==",
+                "==",
                 "elevator",
                 "yes"
             ],
             [
-                "filter-==",
+                "==",
                 "highway",
                 "elevator"
             ]
@@ -407,7 +407,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "indoor",
             "wall"
         ],
@@ -458,7 +458,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "indoor",
             "block"
         ],
@@ -484,7 +484,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "handrail",
             "yes"
         ],
@@ -510,7 +510,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "railway",
             "rail"
         ],
@@ -536,7 +536,7 @@
     },
     {
         "filter": [
-            "filter-==",
+            "==",
             "railway",
             "rail"
         ],
@@ -598,17 +598,17 @@
                 ]
             ],
             [
-                "filter-==",
+                "==",
                 "trashcan",
                 "yes"
             ],
             [
-                "filter-==",
+                "==",
                 "copier",
                 "yes"
             ],
             [
-                "filter-==",
+                "==",
                 "amenity",
                 "vending_machine"
             ]
@@ -707,7 +707,7 @@
         "filter": [
             "all",
             [
-                "filter-==",
+                "==",
                 "highway",
                 "steps"
             ],
@@ -796,7 +796,7 @@
         "filter": [
             "all",
             [
-                "filter-==",
+                "==",
                 "highway",
                 "steps"
             ],
@@ -844,7 +844,7 @@
             "text-max-width": 8
         },
         "filter": [
-            "filter-==",
+            "==",
             "indoor",
             "room"
         ],
