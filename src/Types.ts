@@ -1,6 +1,6 @@
 import type { FeatureCollection, Geometry } from 'geojson';
-import type { 
-    Map, 
+import type {
+    Map,
     Listener,
     LayerSpecification,
 } from 'maplibre-gl';
@@ -21,10 +21,6 @@ export type IndoorMapOptions = {
     layersToHide?: Array<string>,
     showFeaturesWithEmptyLevel?: boolean
 }
-
-export type IndoorMapGeoJSON = FeatureCollection<Geometry>;
-
-export type MapGL = Map;
 
 export type IndoorMapEvent = 'indoor.map.loaded'
     | 'indoor.map.unloaded'

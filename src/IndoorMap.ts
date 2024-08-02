@@ -2,13 +2,13 @@ import Style from './style';
 import GeoJsonHelper from './GeojsonHelper';
 
 
-import type { LevelsRange, IndoorMapGeoJSON, IndoorMapOptions } from './Types';
+import type { LevelsRange, IndoorMapOptions } from './Types';
 import type { LayerSpecification } from 'maplibre-gl';
-import type { BBox } from 'geojson';
+import type {BBox, FeatureCollection, Geometry} from 'geojson';
 
 class IndoorMap {
     bounds: BBox;
-    geojson: IndoorMapGeoJSON;
+    geojson: FeatureCollection<Geometry>;
     layers: Array<LayerSpecification>;
     levelsRange: LevelsRange;
     beforeLayerId?: string;
@@ -17,7 +17,7 @@ class IndoorMap {
     showFeaturesWithEmptyLevel: boolean;
 
     constructor(bounds: BBox,
-        geojson: IndoorMapGeoJSON,
+        geojson: FeatureCollection<Geometry>,
         layers: Array<LayerSpecification>,
         levelsRange: LevelsRange,
         layersToHide: Array<string>,
@@ -37,7 +37,7 @@ class IndoorMap {
 
     }
 
-    static fromGeojson(geojson: IndoorMapGeoJSON, options: IndoorMapOptions = {}) {
+    static fromGeojson(geojson: FeatureCollection<Geometry>, options: IndoorMapOptions = {}) {
 
         const { bounds, levelsRange } = GeoJsonHelper.extractLevelsRangeAndBounds(geojson);
 

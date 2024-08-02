@@ -2,14 +2,14 @@ import IndoorLayer from './IndoorLayer';
 import IndoorMap from './IndoorMap';
 
 import type { Level, MapGLWithIndoor } from './Types';
-import type { Map } from 'maplibre-gl';
+import type { Map, IControl } from 'maplibre-gl';
 
 /**
  * Creates a indoor control with floors buttons
 
  * @implements {IControl}
  */
-class IndoorControl {
+class IndoorControl implements IControl{
 
     _map?: MapGLWithIndoor;
     _indoor?: IndoorLayer;

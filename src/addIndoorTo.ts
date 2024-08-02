@@ -1,8 +1,9 @@
 import IndoorLayer from './IndoorLayer';
 
-import type { MapGLWithIndoor, MapGL } from './Types';
+import type { MapGLWithIndoor } from './Types';
+import type {Map} from "maplibre-gl";
 
-export default function addIndoorTo(map: MapGL): MapGLWithIndoor {
+export default function addIndoorTo(map: Map): MapGLWithIndoor {
     Object.defineProperty(
         map,
         'indoor',

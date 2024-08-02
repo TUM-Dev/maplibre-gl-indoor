@@ -45,8 +45,7 @@ class MapServerHandler {
         map.on('move', () => this.loadMapsIfNecessary());
     }
 
-    private loadMapsIfNecessary = async () => {
-
+    private async loadMapsIfNecessary() {
         if (this.map.getZoom() < MIN_ZOOM_TO_DOWNLOAD) {
             return;
         }
@@ -69,7 +68,7 @@ class MapServerHandler {
         const center = this.map.getCenter();
         const dist = bestSizeOfAreaToDownload * Math.sqrt(2);
         const northEast = turfDestination(center.toArray(), dist, Math.PI / 4).geometry.coordinates;
-        const southWest = turfDestination(center.toArray(), dist, - 3 * Math.PI / 4).geometry.coordinates;
+        const southWest = turfDestination(center.toArray(), dist, -3 * Math.PI / 4).geometry.coordinates;
         const boundsToDownload = [southWest[1], southWest[0], northEast[1], northEast[0]] as BBox;
 
         // TODO: I put this here because fetch is async and takes more time than the next call to loadMapsIfNecessary.
@@ -79,7 +78,7 @@ class MapServerHandler {
         this.loadMapsPromise = this.loadMapsInBounds(boundsToDownload);
     }
 
-    private loadMapsInBounds = async (bounds: BBox) => {
+    private async loadMapsInBounds(bounds: BBox) {
         const url = this.serverUrl + `/maps-in-bounds/${bounds[0]},${bounds[1]},${bounds[2]},${bounds[3]}`;
         const maps: RemoteMap[] = await (await fetch(url)).json();
 
@@ -97,19 +96,19 @@ class MapServerHandler {
             return acc;
         }, []);
 
-        mapsToAdd.forEach(this.addCustomMap);
-        mapsToRemove.forEach(this.removeCustomMap);
-    };
+        mapsToAdd.forEach(this.addCustomMap.bind(this));
+        mapsToRemove.forEach(this.removeCustomMap.bind(this));
+    }
 
-    private addCustomMap = async (map: RemoteMap) => {
+    private async addCustomMap(map: RemoteMap) {
         const geojson = await (await fetch(this.serverUrl + map.path)).json();
         map.indoorMap = IndoorMap.fromGeojson(geojson, this.indoorMapOptions);
-        this.map.indoor.addMap(map.indoorMap);
+        await this.map.indoor.addMap(map.indoorMap);
         this.remoteMapsDownloaded.push(map);
-    };
+    }
 
-    private removeCustomMap = async (map: RemoteMap) => {
-        this.map.indoor.removeMap(map.indoorMap!);
+    private async removeCustomMap(map: RemoteMap) {
+        await this.map.indoor.removeMap(map.indoorMap!);
         this.remoteMapsDownloaded.splice(this.remoteMapsDownloaded.indexOf(map), 1);
     }
 

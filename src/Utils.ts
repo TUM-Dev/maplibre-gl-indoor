@@ -5,22 +5,16 @@ import type { BBox, Position } from 'geojson';
 export const EarthRadius = 6371008.8;
 
 export function overlap(bounds1: BBox, bounds2: BBox) {
-
-    // If one rectangle is on left side of other
-    if (bounds1[0] > bounds2[2] || bounds2[0] > bounds1[2]) {
+    const oneRectangleIsOnLeftSideOfOther = bounds1[0] > bounds2[2] || bounds2[0] > bounds1[2]
+    if (oneRectangleIsOnLeftSideOfOther) {
         return false;
     }
-
-    // If one rectangle is above other
-    if (bounds1[3] < bounds2[1] || bounds2[3] < bounds1[1]) {
-        return false;
-    }
-
-    return true;
+    const rectangleIsAboveOther = bounds1[3] < bounds2[1] || bounds2[3] < bounds1[1];
+    return !rectangleIsAboveOther;
 }
 
 export function filterWithLevel(initialFilter: ExpressionSpecification, level: Level, showFeaturesWithEmptyLevel: boolean = false): ExpressionSpecification {
-    const levelFilter = [
+    const levelFilter: ExpressionSpecification = [
         'all',
         [
             "has",

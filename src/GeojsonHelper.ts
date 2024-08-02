@@ -1,7 +1,7 @@
 import bbox from '@turf/bbox';
 
-import type { BBox, Feature } from 'geojson';
-import type { LevelsRange, IndoorMapGeoJSON } from './Types';
+import type {BBox, Feature, FeatureCollection, Geometry} from 'geojson';
+import type { LevelsRange } from './Types';
 
 /**
  * Helper for Geojson data
@@ -11,7 +11,7 @@ class GeoJsonHelper {
     /**
      * Extract level from feature
      *
-     * @param {GeoJSONFeature} feature geojson feature
+     * @param {Feature} feature geojson feature
      * @returns {LevelsRange | number | null} the level or the range of level.
      */
     static extractLevelFromFeature(feature: Feature): (LevelsRange | number | null) {
@@ -43,10 +43,10 @@ class GeoJsonHelper {
     /**
      * Extract levels range and bounds from geojson
      *
-     * @param {IndoorMapGeoJSON} geojson the geojson
+     * @param {FeatureCollection<Geometry>} geojson the geojson
      * @returns {Object} the levels range and bounds.
      */
-    static extractLevelsRangeAndBounds(geojson: IndoorMapGeoJSON)
+    static extractLevelsRangeAndBounds(geojson: FeatureCollection<Geometry>)
         : ({ levelsRange: LevelsRange, bounds: BBox }) {
 
         let minLevel = Infinity;

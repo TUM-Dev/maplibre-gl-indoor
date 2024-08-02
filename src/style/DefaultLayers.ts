@@ -29,7 +29,11 @@ const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
         maki: 'cafe'
     },
     {
-        filter: ['filter-in-small', 'amenity', ['literal', ['bank', 'vending_machine']]],
+        filter: ['==', 'amenity', 'bank'],
+        maki: 'bank'
+    },
+    {
+        filter: ['==', 'amenity', 'vending_machine'],
         maki: 'bank'
     },
     {
