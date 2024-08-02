@@ -108,7 +108,7 @@ export function bboxCenter(bbox: BBox): Position {
     return [(west + east) / 2, (south + north) / 2];
 }
 
-export function bboxContains(bbox: BBox, point: Position): Boolean {
+export function bboxContains(bbox: BBox, point: Position): boolean {
     const [west, south, east, north] = bbox;
     const [lng, lat] = point;
 

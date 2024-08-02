@@ -1,19 +1,19 @@
 {
-  "name": "map-gl-indoor",
-  "description": "A MapGL plugin to visualize multi-level buildings",
-  "version": "0.5.0",
+  "name": "maplibre-gl-indoor",
+  "description": "A MapLibre plugin to visualize multi-level buildings",
   "main": "dist/lib/map-gl-indoor.umd.js",
   "module": "dist/lib/map-gl-indoor.es.js",
   "types": "dist/lib/map-gl-indoor.d.ts",
+  "type": "module",
   "files": [
     "dist"
   ],
-  "private": false,
+  "private": "true",
   "scripts": {
     "build-lib": "tsc && vite build --emptyOutDir -c vite.lib.config.js",
     "serve": "vite preview",
-    "lint": "eslint --ext .js,.ts src",
-    "build-dts": "dts-bundle-generator -o dist/lib/map-gl-indoor.d.ts src/index.ts",
+    "lint": "eslint src && tsc --",
+    "build-dts": "dts-bundle-generator -o dist/lib/map-gl-indoor.d.ts src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -31,20 +31,23 @@
   "author": "Thibaud Michel",
   "license": "MIT",
   "devDependencies": {
-    "@turf/centroid": "^6.5.0",
-    "@types/geojson": "^7946.0.8",
-    "@typescript-eslint/eslint-plugin": "^5.15.0",
-    "@typescript-eslint/parser": "^5.15.0",
-    "dts-bundle-generator": "^6.5.0",
-    "eslint": "^8.11.0",
-    "events": "^3.3.0",
-    "typescript": "^4.6.2",
-    "vite": "^3.1.4"
+    "@eslint/js": "^9.8.0",
+    "@turf/centroid": "6.5.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/geojson": "7946.0.14",
+    "@typescript-eslint/eslint-plugin": "8.0.0",
+    "@typescript-eslint/parser": "8.0.0",
+    "dts-bundle-generator": "9.5.1",
+    "eslint": "9.8.0",
+    "events": "3.3.0",
+    "typescript": "5.5.4",
+    "typescript-eslint": "^8.0.0",
+    "vite": "5.3.5"
   },
   "dependencies": {
-    "@turf/bbox": "^6.5.0",
-    "@turf/destination": "^6.5.0",
-    "@turf/distance": "^6.5.0",
+    "@turf/bbox": "7.0.0",
+    "@turf/destination": "7.0.0",
+    "@turf/distance": "7.0.0",
     "maplibre-gl": "4.5.1"
   },
   "exports": {

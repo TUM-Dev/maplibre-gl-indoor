@@ -60,7 +60,7 @@ class IndoorLayer {
         return this._level;
     }
 
-    setLevel(level: Level | null, fireEvent: Boolean = true): void {
+    setLevel(level: Level | null, fireEvent: boolean = true): void {
 
         if (this._selectedMap === null) {
             throw new Error('Cannot set level, no map has been selected');
@@ -211,9 +211,9 @@ class IndoorLayer {
 
         const cameraBounds = this._map.getBounds();
         const cameraBoundsTurf = [
-            cameraBounds.getWest(), 
-            cameraBounds.getSouth(), 
-            cameraBounds.getEast(), 
+            cameraBounds.getWest(),
+            cameraBounds.getSouth(),
+            cameraBounds.getEast(),
             cameraBounds.getNorth()
         ] as BBox;
         const mapsInBounds = this._indoorMaps.filter(indoorMap =>

@@ -1,6 +1,6 @@
 import defaultLayers from './default_layers.json';
 
-import type { LayerSpecification } from 'maplibre-gl';
+import type {ExpressionFilterSpecification, LayerSpecification} from 'maplibre-gl';
 
 let layers: Array<LayerSpecification> = defaultLayers;
 
@@ -11,21 +11,21 @@ let layers: Array<LayerSpecification> = defaultLayers;
 const POI_LAYER_ID = "poi-indoor";
 
 type FilterMakiEntry = {
-    filter: any,
+    filter: ExpressionFilterSpecification,
     maki: string
 }
 
 const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
     {
-        filter: ['filter-==', 'amenity', 'fast_food'],
+        filter: ['==', 'amenity', 'fast_food'],
         maki: 'fast-food'
     },
     {
-        filter: ['filter-==', 'amenity', 'restaurant'],
+        filter: ['==', 'amenity', 'restaurant'],
         maki: 'restaurant'
     },
     {
-        filter: ['filter-==', 'amenity', 'cafe'],
+        filter: ['==', 'amenity', 'cafe'],
         maki: 'cafe'
     },
     {
@@ -33,39 +33,39 @@ const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
         maki: 'bank'
     },
     {
-        filter: ['filter-==', 'amenity', 'toilets'],
+        filter: ['==', 'amenity', 'toilets'],
         maki: 'toilet'
     },
     {
-        filter: ['any', ['filter-==', 'highway', 'elevator'], ['has', 'elevator']],
+        filter: ['any', ['==', 'highway', 'elevator'], ['has', 'elevator']],
         maki: 'triangle-stroked'
     },
     {
-        filter: ['filter-==', 'natural', 'tree'],
+        filter: ['==', 'natural', 'tree'],
         maki: 'park'
     },
     {
-        filter: ['filter-==', 'shop', 'travel_agency'],
+        filter: ['==', 'shop', 'travel_agency'],
         maki: 'suitcase'
     },
     {
-        filter: ['filter-==', 'shop', 'convenience'],
+        filter: ['==', 'shop', 'convenience'],
         maki: 'grocery'
     },
     {
-        filter: ['filter-==', 'shop', 'bakery'],
+        filter: ['==', 'shop', 'bakery'],
         maki: 'bakery'
     },
     {
-        filter: ['filter-==', 'shop', 'chemist'],
+        filter: ['==', 'shop', 'chemist'],
         maki: 'pharmacy'
     },
     {
-        filter: ['filter-==', 'shop', 'clothes'],
+        filter: ['==', 'shop', 'clothes'],
         maki: 'clothing-store'
     },
     {
-        filter: ['filter-==', 'highway', 'steps'],
+        filter: ['==', 'highway', 'steps'],
         maki: 'entrance'
     }
 ];

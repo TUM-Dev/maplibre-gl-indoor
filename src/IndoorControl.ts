@@ -26,8 +26,7 @@ class IndoorControl {
     }
 
     onAdd(map: Map | MapGLWithIndoor) {
-
-        if ((map as any).indoor === undefined) {
+        if ((map as MapGLWithIndoor).indoor === undefined) {
             throw Error('call addIndoorTo(map) before creating the IndoorControl');
         }
 
