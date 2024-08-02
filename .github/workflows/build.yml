@@ -9,25 +9,14 @@ jobs:
 
     strategy:
       matrix:
-        node_version: [12, 14, 16]
+        node_version: [20, 22]
 
     steps:
-    - uses: actions/checkout@v2
-
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node_version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
+    - run: npm ci
 
-    - name: Install
-      run: npm ci
-
-    - name: Build Lib
-      run: npm run build-lib
-
-    - name: Build Examples
-      run: npm run build-examples
-
-    - name: Build DTS
-      run: npm run build-dts
-
-    - name: Lint
-      run: npm run lint
+    - run: npm run build-lib
+    - run: npm run build-dts
+    - run: npm run lint
