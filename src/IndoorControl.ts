@@ -1,7 +1,8 @@
 import IndoorLayer from './IndoorLayer';
 import IndoorMap from './IndoorMap';
 
-import type { Level, MapGL, MapGLWithIndoor } from './Types';
+import type { Level, MapGLWithIndoor } from './Types';
+import type { Map } from 'maplibre-gl';
 
 /**
  * Creates a indoor control with floors buttons
@@ -24,7 +25,7 @@ class IndoorControl {
         this._indoorMap = null;
     }
 
-    onAdd(map: MapGL | MapGLWithIndoor) {
+    onAdd(map: Map | MapGLWithIndoor) {
 
         if ((map as any).indoor === undefined) {
             throw Error('call addIndoorTo(map) before creating the IndoorControl');
@@ -35,8 +36,8 @@ class IndoorControl {
 
         // Create container
         const container = this._container = document.createElement("div");
-        container.classList.add("mapboxgl-ctrl");
-        container.classList.add("mapboxgl-ctrl-group");
+        container.classList.add("maplibregl-ctrl");
+        container.classList.add("maplibregl-ctrl-group");
         container.style.display = 'none';
         container.addEventListener('contextmenu', this._onContextMenu);
 
@@ -121,7 +122,7 @@ class IndoorControl {
     _createLevelButton(container: HTMLElement, level: Level) {
         const a = document.createElement("button");
         a.innerHTML = level.toString();
-        a.classList.add("mapboxgl-ctrl-icon");
+        a.classList.add("maplibregl-ctrl-icon");
         container.appendChild(a);
         a.addEventListener('click', () => {
             this._map?.fire('indoor.control.clicked', { level });

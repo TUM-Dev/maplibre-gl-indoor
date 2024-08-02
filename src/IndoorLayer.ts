@@ -2,7 +2,8 @@ import { default as turfDistance } from '@turf/distance';
 import IndoorMap from './IndoorMap';
 import { overlap, filterWithLevel, bboxCenter } from './Utils';
 
-import type { Level, ExpressionSpecification, LayerSpecification, MapGL} from './Types';
+import type { Map, ExpressionSpecification, LayerSpecification } from 'maplibre-gl';
+import type { Level } from './Types';
 import type { BBox } from 'geojson';
 
 type SavedFilter = {
@@ -14,11 +15,11 @@ const SOURCE_ID = 'indoor';
 
 /**
  * Manage indoor levels
- * @param {Map} map the Mapbox map
+ * @param {Map} map the Maplibre map
  */
 class IndoorLayer {
 
-    _map: MapGL;
+    _map: Map;
     _level: Level | null;
 
     _indoorMaps: Array<IndoorMap>;
@@ -31,7 +32,7 @@ class IndoorLayer {
 
     _updateMapPromise: Promise<void>;
 
-    constructor(map: MapGL) {
+    constructor(map: Map) {
         this._map = map;
         this._level = null;
 

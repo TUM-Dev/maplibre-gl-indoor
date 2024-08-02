@@ -2,7 +2,8 @@ import Style from './style';
 import GeoJsonHelper from './GeojsonHelper';
 
 
-import type { LevelsRange, IndoorMapGeoJSON, IndoorMapOptions, LayerSpecification } from './Types';
+import type { LevelsRange, IndoorMapGeoJSON, IndoorMapOptions } from './Types';
+import type { LayerSpecification } from 'maplibre-gl';
 import type { BBox } from 'geojson';
 
 class IndoorMap {

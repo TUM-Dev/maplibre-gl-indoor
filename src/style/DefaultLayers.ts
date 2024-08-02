@@ -1,6 +1,6 @@
 import defaultLayers from './default_layers.json';
 
-import type { LayerSpecification } from '../Types';
+import type { LayerSpecification } from 'maplibre-gl';
 
 let layers: Array<LayerSpecification> = defaultLayers;
 

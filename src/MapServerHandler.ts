@@ -5,7 +5,8 @@ import addIndoorTo from './addIndoorTo';
 import IndoorMap from './IndoorMap';
 import { bboxContains } from './Utils';
 
-import type { MapGL, MapGLWithIndoor, IndoorMapOptions } from './Types';
+import type { MapGLWithIndoor, IndoorMapOptions } from './Types';
+import type { Map } from 'maplibre-gl';
 import type { BBox } from 'geojson';
 
 type RemoteMap = {
@@ -113,7 +114,7 @@ class MapServerHandler {
     }
 
 
-    static manage(server: string, map: MapGL, indoorMapOptions?: IndoorMapOptions) {
+    static manage(server: string, map: Map, indoorMapOptions?: IndoorMapOptions) {
         return new MapServerHandler(server, addIndoorTo(map), indoorMapOptions);
     }
 
