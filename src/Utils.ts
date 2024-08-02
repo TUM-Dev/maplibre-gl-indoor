@@ -1,4 +1,5 @@
-import type { ExpressionSpecification, Level } from './Types';
+import type { Level } from './Types';
+import type { ExpressionSpecification } from 'maplibre-gl';
 import type { BBox, Position } from 'geojson';
 
 export const EarthRadius = 6371008.8;
@@ -19,71 +20,63 @@ export function overlap(bounds1: BBox, bounds2: BBox) {
 }
 
 export function filterWithLevel(initialFilter: ExpressionSpecification, level: Level, showFeaturesWithEmptyLevel: boolean = false): ExpressionSpecification {
-    return [
-        "all",
-        initialFilter,
+    const levelFilter = [
+        'all',
         [
-            'any',
-            showFeaturesWithEmptyLevel ? ["!", ["has", "level"]] : false,
+            "has",
+            "level"
+        ],
+        [
+            "any",
             [
-                'all',
+                "==",
+                ["get", "level"],
+                level.toString()
+            ],
+            [
+                "all",
                 [
-                    "has",
-                    "level"
+                    "!=",
+                    [
+                        "index-of",
+                        ";",
+                        ["get", "level"]
+                    ],
+                    -1,
                 ],
                 [
-                    "any",
+                    ">=",
+                    level,
                     [
-                        "==",
-                        ["get", "level"],
-                        level.toString()
-                    ],
-                    [
-                        "all",
+                        "to-number",
                         [
-                            "!=",
+                            "slice",
+                            ["get", "level"],
+                            0,
                             [
                                 "index-of",
                                 ";",
                                 ["get", "level"]
-                            ],
-                            -1,
-                        ],
-                        [
-                            ">=",
-                            level,
-                            [
-                                "to-number",
-                                [
-                                    "slice",
-                                    ["get", "level"],
-                                    0,
-                                    [
-                                        "index-of",
-                                        ";",
-                                        ["get", "level"]
-                                    ]
-                                ]
                             ]
-                        ],
+                        ]
+                    ]
+                ],
+                [
+                    "<=",
+                    level,
+                    [
+                        "to-number",
                         [
-                            "<=",
-                            level,
+                            "slice",
+                            ["get", "level"],
                             [
-                                "to-number",
+                                "+",
                                 [
-                                    "slice",
-                                    ["get", "level"],
-                                    [
-                                        "+",
-                                        [
-                                            "index-of",
-                                            ";",
-                                            ["get", "level"]
-                                        ],
-                                        1
-                                    ]
-                                ]
+                                    "index-of",
+                                    ";",
+                                    ["get", "level"]
+                                ],
+                                1
                             ]
                         ]
                     ]
@@ -91,6 +84,23 @@ export function filterWithLevel(initialFilter: ExpressionSpecification, level: L
             ]
         ]
     ];
+    if (showFeaturesWithEmptyLevel) {
+        return [
+            "all",
+            initialFilter,
+            [
+                'any',
+                ["!has", "level"],
+                levelFilter,
+            ],
+        ];
+    } else {
+        return [
+            "all",
+            initialFilter,
+            levelFilter,
+        ];
+    }
 }
 
 export function bboxCenter(bbox: BBox): Position {
