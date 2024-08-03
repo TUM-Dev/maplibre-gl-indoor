@@ -7,7 +7,7 @@ export default defineConfig({
         lib: {
             entry: resolve(__dirname, "src/index.ts"),
             name: "mapgl_indoor",
-            fileName: (format) => `map-gl-indoor.${format}.js`,
+            fileName: (format) => `maplibre-gl-indoor.${format}.js`,
             formats: ["es", "umd", "cjs"],
         },
         outDir: resolve(__dirname, "dist"),

@@ -1,23 +1,23 @@
 {
   "name": "maplibre-gl-indoor",
   "description": "A MapLibre plugin to visualize multi-level buildings",
-  "main": "dist/map-gl-indoor.umd.js",
-  "module": "dist/map-gl-indoor.es.js",
-  "types": "dist/map-gl-indoor.d.ts",
+  "main": "dist/maplibre-gl-indoor.umd.js",
+  "module": "dist/maplibre-gl-indoor.es.js",
+  "types": "dist/maplibre-gl-indoor.d.ts",
   "type": "module",
   "files": [
     "dist"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "lint": "eslint src && tsc --noEmit && prettier --write .",
-    "build": "npm run build-lib && npm run build-dts",
+    "build": "rm -fr dist && npm run build-lib && npm run build-dts",
     "build-lib": "tsc && vite build --emptyOutDir -c vite.lib.config.js",
-    "build-dts": "dts-bundle-generator -o dist/map-gl-indoor.d.ts src/index.ts"
+    "build-dts": "dts-bundle-generator -o dist/maplibre-gl-indoor.d.ts src/index.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/map-gl-indoor/map-gl-indoor.git"
+    "url": "git://github.com/TUM-Dev/maplibre-gl-indoor.git"
   },
   "keywords": [
     "indoor",
@@ -28,11 +28,10 @@
     "map",
     "maplibre"
   ],
-  "author": "Thibaud Michel",
+  "author": "Thibaud Michel, modified by Frank Elsinga",
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.8.0",
-    "@turf/centroid": "6.5.0",
     "@types/eslint__js": "^8.42.3",
     "@types/geojson": "7946.0.14",
     "@typescript-eslint/eslint-plugin": "8.0.0",
@@ -52,9 +51,9 @@
     "maplibre-gl": "4.5.1"
   },
   "exports": {
-    ".": {
-      "import": "./dist/map-gl-indoor.es.js",
-      "require": "./dist/map-gl-indoor.umd.js"
-    }
+    "./dist": "./dist",
+    "./LICENSE": "./LICENSE",
+    "./package.json": "./package.json",
+    "./pnpm-lock.yaml": "./pnpm-lock.yaml"
   }
 }
