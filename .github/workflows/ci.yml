@@ -38,5 +38,4 @@ jobs:
           package_json_file: package.json
           run_install: |
             - args: [--frozen-lockfile, --strict-peer-dependencies]
-      - run: npm ci
       - run: npm run lint
