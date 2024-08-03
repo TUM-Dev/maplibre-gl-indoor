@@ -9,7 +9,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#E6E4E0",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [16.5, 0],
           [18, 1],
@@ -25,7 +25,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#E6E4E0",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [16.5, 0],
           [18, 1],
@@ -44,7 +44,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#cde8a2",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -61,7 +61,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "fill-color": "#D7CCC8",
       "fill-outline-color": "#000000",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -76,7 +76,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 0.1],
@@ -94,7 +94,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#D7CCC8",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -105,7 +105,7 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "any",
-      ["filter-in-small", "indoor", ["literal", ["room", "area"]]],
+      ["in", ["get", "indoor"], ["literal", ["room", "area"]]],
       ["==", "railway", "platform"],
     ],
     id: "indoor-rooms",
@@ -114,7 +114,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#A1887F",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -131,7 +131,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "line-color": "#000",
       "line-width": 1,
       "line-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -147,7 +147,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#D7CCC8",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -162,7 +162,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-color": {
-        base: 1,
+          default: 1,
         stops: [
           [16, "hsl(230, 16%, 94%)"],
           [16.25, "hsl(230, 50%, 98%)"],
@@ -182,7 +182,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "fill-outline-color": "hsl(35, 10%, 83%)",
       "fill-pattern": "pedestrian-polygon",
       "fill-opacity": {
-        base: 1,
+          default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -198,7 +198,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#BDBDBD",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -220,7 +220,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "fill-color": "#7B635A",
       "fill-outline-color": "#000000",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -236,7 +236,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "line-color": "#000000",
       "line-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -252,7 +252,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "line-color": "#000000",
       "line-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -268,7 +268,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#000000",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [18, 1],
@@ -284,7 +284,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "line-color": "#000000",
       "line-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [19, 1],
@@ -300,7 +300,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "line-color": "hsl(230, 10%, 74%)",
       "line-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [19, 1],
@@ -316,14 +316,14 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "line-color": "hsl(230, 10%, 74%)",
       "line-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [19, 1],
         ],
       },
       "line-width": {
-        base: 1.5,
+        default: 1.5,
         stops: [
           [14, 4],
           [20, 8],
@@ -363,7 +363,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "fill-color": "#000",
       "fill-outline-color": "#000",
       "fill-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [18, 0],
           [19, 0.2],
@@ -375,7 +375,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     id: "indoor-steps",
     paint: {
       "line-width": {
-        base: 1.5,
+        default: 1.5,
         stops: [
           [17, 1],
           [18, 1.6],
@@ -384,7 +384,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       },
       "line-color": "hsl(0, 0%, 100%)",
       "line-dasharray": {
-        base: 1,
+        default: 1,
         stops: [
           [17, [1, 0]],
           [17.5, [1.75, 1]],
@@ -393,7 +393,7 @@ export const defaultLayers: Array<LayerSpecification> = [
         ],
       },
       "line-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [17.25, 1],
@@ -411,7 +411,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     id: "indoor-conveying",
     paint: {
       "line-width": {
-        base: 1.5,
+        default: 1.5,
         stops: [
           [17, 1],
           [18, 1.6],
@@ -420,7 +420,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       },
       "line-color": "#FF0000",
       "line-dasharray": {
-        base: 1,
+        default: 1,
         stops: [
           [17, [1, 0]],
           [17.5, [1.75, 1]],
@@ -429,7 +429,7 @@ export const defaultLayers: Array<LayerSpecification> = [
         ],
       },
       "line-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [17.25, 1],
@@ -449,7 +449,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     layout: {
       "text-line-height": 1.2,
       "text-size": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 10],
           [20, 12],
@@ -477,7 +477,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "text-halo-color": "#ffffff",
       "text-halo-width": 1,
       "text-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [18, 0],
           [18.5, 0.5],
@@ -492,14 +492,14 @@ export const defaultLayers: Array<LayerSpecification> = [
     layout: {
       "text-line-height": 1.2,
       "icon-size": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0.5],
           [20, 1],
         ],
       },
       "text-size": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 11],
           [20, 13],
@@ -533,7 +533,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "text-halo-color": "#ffffff",
       "text-halo-width": 1,
       "text-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [17.5, 0.5],
@@ -541,7 +541,7 @@ export const defaultLayers: Array<LayerSpecification> = [
         ],
       },
       "icon-opacity": {
-        base: 1,
+        default: 1,
         stops: [
           [17, 0],
           [17.5, 0.5],
