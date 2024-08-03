@@ -1,117 +1,146 @@
-import { default as turfDestination } from '@turf/destination';
-import { default as turfDistance } from '@turf/distance';
+import { default as turfDestination } from "@turf/destination";
+import { default as turfDistance } from "@turf/distance";
 
-import addIndoorTo from './addIndoorTo';
-import IndoorMap from './IndoorMap';
-import { bboxContains } from './Utils';
+import addIndoorTo from "./addIndoorTo";
+import IndoorMap from "./IndoorMap";
+import { bboxContains } from "./Utils";
 
-import type { MapGLWithIndoor, IndoorMapOptions } from './Types';
-import type { Map } from 'maplibre-gl';
-import type { BBox } from 'geojson';
+import type { MapGLWithIndoor, IndoorMapOptions } from "./Types";
+import type { Map } from "maplibre-gl";
+import type { BBox } from "geojson";
 
 type RemoteMap = {
-    name: string,
-    path: string,
-    indoorMap?: IndoorMap
-}
+  name: string;
+  path: string;
+  indoorMap?: IndoorMap;
+};
 
 const MIN_ZOOM_TO_DOWNLOAD = 17;
 const AREA_TO_DOWNLOAD = 1000; // in terms of distance from user
 
 class MapServerHandler {
+  serverUrl: string;
 
-    serverUrl: string;
+  map: MapGLWithIndoor;
+  remoteMapsDownloaded: RemoteMap[];
+  downloadedBounds: BBox | null;
 
-    map: MapGLWithIndoor;
-    remoteMapsDownloaded: RemoteMap[];
-    downloadedBounds: BBox | null;
+  loadMapsPromise: Promise<void> = Promise.resolve();
 
-    loadMapsPromise: Promise<void> = Promise.resolve();
+  indoorMapOptions?: IndoorMapOptions;
 
-    indoorMapOptions?: IndoorMapOptions;
+  private constructor(
+    serverUrl: string,
+    map: MapGLWithIndoor,
+    indoorMapOptions?: IndoorMapOptions,
+  ) {
+    this.serverUrl = serverUrl;
+    this.map = map;
+    this.indoorMapOptions = indoorMapOptions;
+    this.remoteMapsDownloaded = [];
+    this.downloadedBounds = null;
 
-    private constructor(serverUrl: string, map: MapGLWithIndoor, indoorMapOptions?: IndoorMapOptions) {
-        this.serverUrl = serverUrl;
-        this.map = map;
-        this.indoorMapOptions = indoorMapOptions;
-        this.remoteMapsDownloaded = [];
-        this.downloadedBounds = null;
+    if (map.loaded()) {
+      this.loadMapsIfNecessary();
+    } else {
+      map.on("load", () => this.loadMapsIfNecessary());
+    }
+    map.on("move", () => this.loadMapsIfNecessary());
+  }
 
-        if (map.loaded()) {
-            this.loadMapsIfNecessary();
-        } else {
-            map.on('load', () => this.loadMapsIfNecessary())
-        }
-        map.on('move', () => this.loadMapsIfNecessary());
+  private async loadMapsIfNecessary() {
+    if (this.map.getZoom() < MIN_ZOOM_TO_DOWNLOAD) {
+      return;
     }
 
-    private async loadMapsIfNecessary() {
-        if (this.map.getZoom() < MIN_ZOOM_TO_DOWNLOAD) {
-            return;
-        }
-
-        const viewPort = this.map.getBounds();
-        if (this.downloadedBounds !== null) {
-            if (bboxContains(this.downloadedBounds, viewPort.getNorthEast().toArray()) &&
-                bboxContains(this.downloadedBounds, viewPort.getSouthWest().toArray())) {
-                // Maps of the viewport have already been downloaded.
-                return;
-            }
-        }
-
-        const distanceEastWest = turfDistance(viewPort.getNorthEast().toArray(), viewPort.getNorthWest().toArray());
-        const distanceNorthSouth = turfDistance(viewPort.getNorthEast().toArray(), viewPort.getSouthEast().toArray());
-        // It is not necessary to compute others as we are at zoom >= 17, the approximation is enough.
-        const maxDistanceOnScreen = Math.max(distanceEastWest, distanceNorthSouth);
-        const bestSizeOfAreaToDownload = Math.max(AREA_TO_DOWNLOAD, maxDistanceOnScreen * 2);
-
-        const center = this.map.getCenter();
-        const dist = bestSizeOfAreaToDownload * Math.sqrt(2);
-        const northEast = turfDestination(center.toArray(), dist, Math.PI / 4).geometry.coordinates;
-        const southWest = turfDestination(center.toArray(), dist, -3 * Math.PI / 4).geometry.coordinates;
-        const boundsToDownload = [southWest[1], southWest[0], northEast[1], northEast[0]] as BBox;
-
-        // TODO: I put this here because fetch is async and takes more time than the next call to loadMapsIfNecessary.
-        this.downloadedBounds = boundsToDownload;
-
-        await this.loadMapsPromise;
-        this.loadMapsPromise = this.loadMapsInBounds(boundsToDownload);
+    const viewPort = this.map.getBounds();
+    if (this.downloadedBounds !== null) {
+      if (
+        bboxContains(
+          this.downloadedBounds,
+          viewPort.getNorthEast().toArray(),
+        ) &&
+        bboxContains(this.downloadedBounds, viewPort.getSouthWest().toArray())
+      ) {
+        // Maps of the viewport have already been downloaded.
+        return;
+      }
     }
 
-    private async loadMapsInBounds(bounds: BBox) {
-        const url = this.serverUrl + `/maps-in-bounds/${bounds[0]},${bounds[1]},${bounds[2]},${bounds[3]}`;
-        const maps: RemoteMap[] = await (await fetch(url)).json();
-        const mapsToRemove: RemoteMap[] =[]
-        const mapsToAdd: RemoteMap[]=[]
-        for (const map of maps){
-            if (!maps.find(_map => _map.path === map.path)) {
-                mapsToRemove.push(map);
-            } else if (!this.remoteMapsDownloaded.find(_map => _map.path === map.path)){
-                mapsToAdd.push(map)
-            }
-        }
+    const distanceEastWest = turfDistance(
+      viewPort.getNorthEast().toArray(),
+      viewPort.getNorthWest().toArray(),
+    );
+    const distanceNorthSouth = turfDistance(
+      viewPort.getNorthEast().toArray(),
+      viewPort.getSouthEast().toArray(),
+    );
+    // It is not necessary to compute others as we are at zoom >= 17, the approximation is enough.
+    const maxDistanceOnScreen = Math.max(distanceEastWest, distanceNorthSouth);
+    const bestSizeOfAreaToDownload = Math.max(
+      AREA_TO_DOWNLOAD,
+      maxDistanceOnScreen * 2,
+    );
 
-        mapsToAdd.forEach(this.addCustomMap.bind(this));
-        mapsToRemove.forEach(this.removeCustomMap.bind(this));
+    const center = this.map.getCenter();
+    const dist = bestSizeOfAreaToDownload * Math.sqrt(2);
+    const northEast = turfDestination(center.toArray(), dist, Math.PI / 4)
+      .geometry.coordinates;
+    const southWest = turfDestination(
+      center.toArray(),
+      dist,
+      (-3 * Math.PI) / 4,
+    ).geometry.coordinates;
+    const boundsToDownload = [
+      southWest[1],
+      southWest[0],
+      northEast[1],
+      northEast[0],
+    ] as BBox;
+
+    // TODO: I put this here because fetch is async and takes more time than the next call to loadMapsIfNecessary.
+    this.downloadedBounds = boundsToDownload;
+
+    await this.loadMapsPromise;
+    this.loadMapsPromise = this.loadMapsInBounds(boundsToDownload);
+  }
+
+  private async loadMapsInBounds(bounds: BBox) {
+    const url =
+      this.serverUrl +
+      `/maps-in-bounds/${bounds[0]},${bounds[1]},${bounds[2]},${bounds[3]}`;
+    const maps: RemoteMap[] = await (await fetch(url)).json();
+    const mapsToRemove: RemoteMap[] = [];
+    const mapsToAdd: RemoteMap[] = [];
+    for (const map of maps) {
+      if (!maps.find((_map) => _map.path === map.path)) {
+        mapsToRemove.push(map);
+      } else if (
+        !this.remoteMapsDownloaded.find((_map) => _map.path === map.path)
+      ) {
+        mapsToAdd.push(map);
+      }
     }
 
-    private async addCustomMap(map: RemoteMap) {
-        const geojson = await (await fetch(this.serverUrl + map.path)).json();
-        map.indoorMap = IndoorMap.fromGeojson(geojson, this.indoorMapOptions);
-        await this.map.indoor.addMap(map.indoorMap);
-        this.remoteMapsDownloaded.push(map);
-    }
+    mapsToAdd.forEach(this.addCustomMap.bind(this));
+    mapsToRemove.forEach(this.removeCustomMap.bind(this));
+  }
 
-    private async removeCustomMap(map: RemoteMap) {
-        await this.map.indoor.removeMap(map.indoorMap!);
-        this.remoteMapsDownloaded.splice(this.remoteMapsDownloaded.indexOf(map), 1);
-    }
+  private async addCustomMap(map: RemoteMap) {
+    const geojson = await (await fetch(this.serverUrl + map.path)).json();
+    map.indoorMap = IndoorMap.fromGeojson(geojson, this.indoorMapOptions);
+    await this.map.indoor.addMap(map.indoorMap);
+    this.remoteMapsDownloaded.push(map);
+  }
 
+  private async removeCustomMap(map: RemoteMap) {
+    await this.map.indoor.removeMap(map.indoorMap!);
+    this.remoteMapsDownloaded.splice(this.remoteMapsDownloaded.indexOf(map), 1);
+  }
 
-    static manage(server: string, map: Map, indoorMapOptions?: IndoorMapOptions) {
-        return new MapServerHandler(server, addIndoorTo(map), indoorMapOptions);
-    }
-
+  static manage(server: string, map: Map, indoorMapOptions?: IndoorMapOptions) {
+    return new MapServerHandler(server, addIndoorTo(map), indoorMapOptions);
+  }
 }
 
 export default MapServerHandler;

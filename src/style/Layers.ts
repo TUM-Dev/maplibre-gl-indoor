@@ -1,5 +1,9 @@
-import type {ExpressionFilterSpecification, LayerSpecification, SymbolLayerSpecification} from 'maplibre-gl';
-import {defaultLayers} from "./default";
+import type {
+  ExpressionFilterSpecification,
+  LayerSpecification,
+  SymbolLayerSpecification,
+} from "maplibre-gl";
+import { defaultLayers } from "./default";
 
 let layers = defaultLayers;
 /**
@@ -9,107 +13,65 @@ let layers = defaultLayers;
 const POI_LAYER_ID = "poi-indoor";
 
 type FilterMakiEntry = {
-    filter: ExpressionFilterSpecification,
-    maki: string
-}
+  filter: ExpressionFilterSpecification;
+  maki: string;
+};
 
-const OSM_SHOPS: { maki:string,shop:string }[] = [
-
-    {
-        filter: ['==', 'shop', 'travel_agency'],
-        maki: 'suitcase'
-    },
-    {
-        filter: ['==', 'shop', 'convenience'],
-        maki: 'grocery'
-    },
-    {
-        filter: ['==', 'shop', 'bakery'],
-        maki: 'bakery'
-    },
-    {
-        filter: ['==', 'shop', 'chemist'],
-        maki: 'pharmacy'
-    },
-    {
-        filter: ['==', 'shop', 'clothes'],
-        maki: 'clothing-store'
-    },
-]
-const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
-    {
-        filter: ['==', 'amenity', 'fast_food'],
-        maki: 'fast-food'
-    },
-    {
-        filter: ['==', 'amenity', 'restaurant'],
-        maki: 'restaurant'
-    },
-    {
-        filter: ['==', 'amenity', 'cafe'],
-        maki: 'cafe'
-    },
-    {
-        filter: ['==', 'amenity', 'bank'],
-        maki: 'bank'
-    },
-    {
-        filter: ['==', 'amenity', 'vending_machine'],
-        maki: 'bank'
-    },
-    {
-        filter: ['==', 'amenity', 'toilets'],
-        maki: 'toilet'
-    },
-    {
-        filter: ['any', ['==', 'highway', 'elevator'], ['has', 'elevator']],
-        maki: 'triangle-stroked'
-    },
-    {
-        filter: ['==', 'natural', 'tree'],
-        maki: 'park'
-    },
-    {
-        filter: ['==', 'highway', 'steps'],
-        maki: 'entrance'
-    },
-    ...OSM_SHOPS.map(({maki,shop})=>({maki,filter: ['==', 'shop', shop]} as FilterMakiEntry)),
+const OSM_SHOPS: { maki: string; shop: string }[] = [
+  { shop: "travel_agency", maki: "suitcase" },
+  { shop: "convenience", maki: "grocery" },
+  { shop: "bakery", maki: "bakery" },
+  { shop: "chemist", maki: "pharmacy" },
+  { shop: "clothes", maki: "clothing-store" },
 ];
 
-function createPoiLayers(metaLayer: SymbolLayerSpecification): Array<SymbolLayerSpecification> {
+const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
+  { filter: ["==", "amenity", "fast_food"], maki: "fast-food" },
+  { filter: ["==", "amenity", "restaurant"], maki: "restaurant" },
+  { filter: ["==", "amenity", "cafe"], maki: "cafe" },
+  { filter: ["==", "amenity", "bank"], maki: "bank" },
+  { filter: ["==", "amenity", "vending_machine"], maki: "bank" },
+  { filter: ["==", "amenity", "toilets"], maki: "toilet" },
+  {
+    filter: ["any", ["==", "highway", "elevator"], ["has", "elevator"]],
+    maki: "triangle-stroked",
+  },
+  { filter: ["==", "natural", "tree"], maki: "park" },
+  { filter: ["==", "highway", "steps"], maki: "entrance" },
+  ...OSM_SHOPS.map(
+    ({ maki, shop }) =>
+      ({ maki, filter: ["==", "shop", shop] }) as FilterMakiEntry,
+  ),
+];
 
-    const otherShopsEntry: FilterMakiEntry[] =
-    {
-        filter:
-            ['!',[
-                "in",
-                ["get", "shop"],
-                [
-                    "literal",
-                    OSM_SHOPS.map(val => val.shop)
-                ]
-                ]
-            ],
-        maki: 'shop'
-    };
+function createPoiLayers(
+  metaLayer: SymbolLayerSpecification,
+): Array<SymbolLayerSpecification> {
+  const otherShopsEntry: FilterMakiEntry[] = {
+    filter: [
+      "!",
+      ["in", ["get", "shop"], ["literal", OSM_SHOPS.map((val) => val.shop)]],
+    ],
+    maki: "shop",
+  };
 
-    return OSM_FILTER_MAPBOX_MAKI_LIST
-        .concat(otherShopsEntry)
-        .map(poi => {
-            const newLayer: LayerSpecification = Object.assign({}, metaLayer);
-            newLayer.id += `-${poi.maki}`;
-            newLayer.filter = poi.filter;
-            newLayer.layout = Object.assign({}, metaLayer.layout);
-            newLayer.layout['icon-image'] = `${poi.maki}-15`;
-            return newLayer;
-        });
+  return OSM_FILTER_MAPBOX_MAKI_LIST.concat(otherShopsEntry).map((poi) => {
+    const newLayer: LayerSpecification = Object.assign({}, metaLayer);
+    newLayer.id += `-${poi.maki}`;
+    newLayer.filter = poi.filter;
+    newLayer.layout = Object.assign({}, metaLayer.layout);
+    newLayer.layout["icon-image"] = `${poi.maki}-15`;
+    return newLayer;
+  });
 }
 
-const poiLayer = layers.find(layer => layer.id === POI_LAYER_ID);
+const poiLayer = layers.find((layer) => layer.id === POI_LAYER_ID);
 if (poiLayer) {
-    // Convert poi-indoor layer into several poi-layers
-    createPoiLayers(poiLayer as SymbolLayerSpecification).forEach(_layer => layers.push(_layer));
-    layers = layers.filter(layer => layer.id !== POI_LAYER_ID);
+  // Convert poi-indoor layer into several poi-layers
+  createPoiLayers(poiLayer as SymbolLayerSpecification).forEach((_layer) =>
+    layers.push(_layer),
+  );
+  layers = layers.filter((layer) => layer.id !== POI_LAYER_ID);
 }
 
 export default layers;
