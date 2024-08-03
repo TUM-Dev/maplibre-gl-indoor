@@ -49,7 +49,7 @@ function createPoiLayers(
 ): Array<SymbolLayerSpecification> {
   const shops = OSM_SHOPS.map((val) => val.shop);
   OSM_FILTER_MAPBOX_MAKI_LIST.push({
-    filter: ["!", ["in", ["get", "shop"], ["literal", shops]]],
+    filter: ["!", ["in", "shop", ["literal", shops]]],
     maki: "shop",
   });
 

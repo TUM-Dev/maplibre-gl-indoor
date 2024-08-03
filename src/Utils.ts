@@ -21,31 +21,28 @@ export function filterWithLevel(
   showFeaturesWithEmptyLevel: boolean = false,
 ): ExpressionSpecification {
   const levelFilter: ExpressionSpecification = [
-    "all",
+    "any",
+    ["==", "level", level.toString()],
     [
-      "any",
-      ["==", ["get", "level"], level.toString()],
+      "all",
+      ["!=", ["index-of", ";", ["get", "level"]], -1],
       [
-        "all",
-        ["!=", ["index-of", ";", ["get", "level"]], -1],
+        ">=",
+        level,
         [
-          ">=",
-          level,
-          [
-            "to-number",
-            ["slice", ["get", "level"], 0, ["index-of", ";", ["get", "level"]]],
-          ],
+          "to-number",
+          ["slice", ["get", "level"], 0, ["index-of", ";", ["get", "level"]]],
         ],
+      ],
+      [
+        "<=",
+        level,
         [
-          "<=",
-          level,
+          "to-number",
           [
-            "to-number",
-            [
-              "slice",
-              ["get", "level"],
-              ["+", ["index-of", ";", ["get", "level"]], 1],
-            ],
+            "slice",
+            ["get", "level"],
+            ["+", ["index-of", ";", ["get", "level"]], 1],
           ],
         ],
       ],
