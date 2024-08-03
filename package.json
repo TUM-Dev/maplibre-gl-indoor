@@ -1,19 +1,19 @@
 {
   "name": "maplibre-gl-indoor",
   "description": "A MapLibre plugin to visualize multi-level buildings",
-  "main": "dist/lib/map-gl-indoor.umd.js",
-  "module": "dist/lib/map-gl-indoor.es.js",
-  "types": "dist/lib/map-gl-indoor.d.ts",
+  "main": "dist/map-gl-indoor.umd.js",
+  "module": "dist/map-gl-indoor.es.js",
+  "types": "dist/map-gl-indoor.d.ts",
   "type": "module",
   "files": [
     "dist"
   ],
-  "private": "true",
+  "version": "0.0.1",
   "scripts": {
-    "build": "tsc && vite build --emptyOutDir -c vite.lib.config.js",
-    "serve": "vite preview",
     "lint": "eslint src && tsc --noEmit && prettier --write .",
-    "build-dts": "dts-bundle-generator -o dist/lib/map-gl-indoor.d.ts src/index.ts"
+    "build": "npm run build-lib && npm run build-dts",
+    "build-lib": "tsc && vite build --emptyOutDir -c vite.lib.config.js",
+    "build-dts": "dts-bundle-generator -o dist/map-gl-indoor.d.ts src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -53,8 +53,8 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/lib/map-gl-indoor.es.js",
-      "require": "./dist/lib/map-gl-indoor.umd.js"
+      "import": "./dist/map-gl-indoor.es.js",
+      "require": "./dist/map-gl-indoor.umd.js"
     }
   }
 }
