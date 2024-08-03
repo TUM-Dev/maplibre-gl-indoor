@@ -47,15 +47,13 @@ const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
 function createPoiLayers(
   metaLayer: SymbolLayerSpecification,
 ): Array<SymbolLayerSpecification> {
-  const otherShopsEntry: FilterMakiEntry[] = {
-    filter: [
-      "!",
-      ["in", ["get", "shop"], ["literal", OSM_SHOPS.map((val) => val.shop)]],
-    ],
+  const shops = OSM_SHOPS.map((val) => val.shop);
+  OSM_FILTER_MAPBOX_MAKI_LIST.push({
+    filter: ["!", ["in", ["get", "shop"], ["literal", shops]]],
     maki: "shop",
-  };
+  });
 
-  return OSM_FILTER_MAPBOX_MAKI_LIST.concat(otherShopsEntry).map((poi) => {
+  return OSM_FILTER_MAPBOX_MAKI_LIST.map((poi) => {
     const newLayer: LayerSpecification = Object.assign({}, metaLayer);
     newLayer.id += `-${poi.maki}`;
     newLayer.filter = poi.filter;

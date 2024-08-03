@@ -8,13 +8,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-color": "#E6E4E0",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [16.5, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
   },
   {
@@ -24,13 +18,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-color": "#E6E4E0",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [16.5, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
   },
   {
@@ -43,13 +31,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
     paint: {
       "fill-color": "#cde8a2",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -60,13 +42,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#D7CCC8",
       "fill-outline-color": "#000000",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -75,13 +51,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
     source: "indoor",
     paint: {
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 0.1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 0.1],
       "fill-pattern": "si-main-3",
       "fill-translate-anchor": "viewport",
     },
@@ -93,13 +63,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-color": "#D7CCC8",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -113,13 +77,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-color": "#A1887F",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -130,13 +88,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "line-color": "#000",
       "line-width": 1,
-      "line-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -146,13 +98,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-color": "#D7CCC8",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -161,13 +107,15 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
     source: "indoor",
     paint: {
-      "fill-color": {
-          default: 1,
-        stops: [
-          [16, "hsl(230, 16%, 94%)"],
-          [16.25, "hsl(230, 50%, 98%)"],
-        ],
-      },
+      "fill-color": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        16,
+        "hsl(230, 16%, 94%)",
+        16.25,
+        "hsl(230, 50%, 98%)",
+      ],
       "fill-outline-color": "hsl(230, 26%, 88%)",
       "fill-opacity": 1,
     },
@@ -181,13 +129,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "fill-color": "hsl(0, 0%, 100%)",
       "fill-outline-color": "hsl(35, 10%, 83%)",
       "fill-pattern": "pedestrian-polygon",
-      "fill-opacity": {
-          default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -197,13 +139,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-color": "#BDBDBD",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -219,13 +155,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#7B635A",
       "fill-outline-color": "#000000",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -235,13 +165,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "line-color": "#000000",
-      "line-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -251,13 +175,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "line-color": "#000000",
-      "line-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -267,13 +185,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "fill-color": "#000000",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [18, 1],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
   },
   {
@@ -283,13 +195,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "line-color": "#000000",
-      "line-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [19, 1],
-        ],
-      },
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 19, 1],
     },
   },
   {
@@ -299,13 +205,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "line-color": "hsl(230, 10%, 74%)",
-      "line-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [19, 1],
-        ],
-      },
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 19, 1],
     },
   },
   {
@@ -315,20 +215,8 @@ export const defaultLayers: Array<LayerSpecification> = [
     source: "indoor",
     paint: {
       "line-color": "hsl(230, 10%, 74%)",
-      "line-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [19, 1],
-        ],
-      },
-      "line-width": {
-        default: 1.5,
-        stops: [
-          [14, 4],
-          [20, 8],
-        ],
-      },
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 19, 1],
+      "line-width": ["interpolate", ["linear"], ["zoom"], 14, 4, 20, 8],
       "line-dasharray": [0.1, 15],
     },
   },
@@ -336,8 +224,8 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: [
       "any",
       [
-        "filter-in-small",
-        "indoor",
+        "in",
+        ["get", "indoor"],
         [
           "literal",
           [
@@ -362,43 +250,38 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#000",
       "fill-outline-color": "#000",
-      "fill-opacity": {
-        default: 1,
-        stops: [
-          [18, 0],
-          [19, 0.2],
-        ],
-      },
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 18, 0, 19, 0.2],
     },
   },
   {
     id: "indoor-steps",
     paint: {
-      "line-width": {
-        default: 1.5,
-        stops: [
-          [17, 1],
-          [18, 1.6],
-          [19, 6],
-        ],
-      },
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        17,
+        1,
+        18,
+        1.6,
+        19,
+        6,
+      ],
       "line-color": "hsl(0, 0%, 100%)",
-      "line-dasharray": {
-        default: 1,
-        stops: [
-          [17, [1, 0]],
-          [17.5, [1.75, 1]],
-          [18, [1, 0.75]],
-          [19, [0.3, 0.3]],
-        ],
-      },
-      "line-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [17.25, 1],
-        ],
-      },
+      "line-dasharray": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        17,
+        [1, 0],
+        17.5,
+        [1.75, 1],
+        18,
+        [1, 0.75],
+        19,
+        [0.3, 0.3],
+      ],
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.25, 1],
     },
     type: "line",
     source: "indoor",
@@ -410,31 +293,32 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     id: "indoor-conveying",
     paint: {
-      "line-width": {
-        default: 1.5,
-        stops: [
-          [17, 1],
-          [18, 1.6],
-          [19, 6],
-        ],
-      },
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        17,
+        1,
+        18,
+        1.6,
+        19,
+        6,
+      ],
       "line-color": "#FF0000",
-      "line-dasharray": {
-        default: 1,
-        stops: [
-          [17, [1, 0]],
-          [17.5, [1.75, 1]],
-          [18, [1, 0.75]],
-          [19, [0.3, 0.3]],
-        ],
-      },
-      "line-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [17.25, 1],
-        ],
-      },
+      "line-dasharray": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        17,
+        [1, 0],
+        17.5,
+        [1.75, 1],
+        18,
+        [1, 0.75],
+        19,
+        [0.3, 0.3],
+      ],
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.25, 1],
     },
     type: "line",
     source: "indoor",
@@ -444,17 +328,10 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
   },
   {
-    interactive: true,
     minzoom: 17,
     layout: {
       "text-line-height": 1.2,
-      "text-size": {
-        default: 1,
-        stops: [
-          [17, 10],
-          [20, 12],
-        ],
-      },
+      "text-size": ["interpolate", ["linear"], ["zoom"], 17, 10, 20, 12],
       "text-allow-overlap": false,
       "text-ignore-placement": false,
       "text-max-angle": 38,
@@ -476,35 +353,25 @@ export const defaultLayers: Array<LayerSpecification> = [
       "text-color": "#65513d",
       "text-halo-color": "#ffffff",
       "text-halo-width": 1,
-      "text-opacity": {
-        default: 1,
-        stops: [
-          [18, 0],
-          [18.5, 0.5],
-          [19, 1],
-        ],
-      },
+      "text-opacity": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        18,
+        0,
+        18.5,
+        0.5,
+        19,
+        1,
+      ],
     },
   },
   {
-    interactive: true,
     minzoom: 17,
     layout: {
       "text-line-height": 1.2,
-      "icon-size": {
-        default: 1,
-        stops: [
-          [17, 0.5],
-          [20, 1],
-        ],
-      },
-      "text-size": {
-        default: 1,
-        stops: [
-          [17, 11],
-          [20, 13],
-        ],
-      },
+      "icon-size": ["interpolate", ["linear"], ["zoom"], 17, 0.5, 20, 1],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 17, 11, 20, 13],
       "text-allow-overlap": false,
       "icon-image": "{maki}-15",
       "icon-anchor": "center",
@@ -532,22 +399,28 @@ export const defaultLayers: Array<LayerSpecification> = [
       "text-color": "#65513d",
       "text-halo-color": "#ffffff",
       "text-halo-width": 1,
-      "text-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [17.5, 0.5],
-          [19, 1],
-        ],
-      },
-      "icon-opacity": {
-        default: 1,
-        stops: [
-          [17, 0],
-          [17.5, 0.5],
-          [19, 1],
-        ],
-      },
+      "text-opacity": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        17,
+        0,
+        17.5,
+        0.5,
+        19,
+        1,
+      ],
+      "icon-opacity": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        17,
+        0,
+        17.5,
+        0.5,
+        19,
+        1,
+      ],
     },
   },
 ];

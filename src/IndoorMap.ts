@@ -1,9 +1,9 @@
 import Style from "./style";
 import GeoJsonHelper from "./GeojsonHelper";
 
-import type {IndoorMapOptions, LevelsRange} from "./Types";
-import type {LayerSpecification} from "maplibre-gl";
-import type {BBox, FeatureCollection, Geometry} from "geojson";
+import type { IndoorMapOptions, LevelsRange } from "./Types";
+import type { LayerSpecification } from "maplibre-gl";
+import type { BBox, FeatureCollection, Geometry } from "geojson";
 
 class IndoorMap {
   bounds: BBox;
@@ -43,16 +43,16 @@ class IndoorMap {
       GeoJsonHelper.extractLevelsRangeAndBounds(geojson);
 
     return new IndoorMap(
-        bounds,
-        geojson,
-        options.layers ? options.layers : Style.DefaultLayers,
-        levelsRange,
-        options.layersToHide ? options.layersToHide : [],
-        options.defaultLevel ? options.defaultLevel : 0,
-        options.showFeaturesWithEmptyLevel
-            ? options.showFeaturesWithEmptyLevel
-            : false,
-        options.beforeLayerId,
+      bounds,
+      geojson,
+      options.layers ? options.layers : Style.DefaultLayers,
+      levelsRange,
+      options.layersToHide ? options.layersToHide : [],
+      options.defaultLevel ? options.defaultLevel : 0,
+      options.showFeaturesWithEmptyLevel
+        ? options.showFeaturesWithEmptyLevel
+        : false,
+      options.beforeLayerId,
     );
   }
 }
