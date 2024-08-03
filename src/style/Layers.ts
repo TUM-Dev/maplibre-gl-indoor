@@ -30,8 +30,7 @@ const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
   { filter: ["==", "amenity", "fast_food"], maki: "fast-food" },
   { filter: ["==", "amenity", "restaurant"], maki: "restaurant" },
   { filter: ["==", "amenity", "cafe"], maki: "cafe" },
-  { filter: ["==", "amenity", "bank"], maki: "bank" },
-  { filter: ["==", "amenity", "vending_machine"], maki: "bank" },
+  { filter: ["any", ["==", "amenity", "bank"], ["==", "amenity", "vending_machine"]], maki: "bank" },
   { filter: ["==", "amenity", "toilets"], maki: "toilet" },
   {
     filter: ["any", ["==", "highway", "elevator"], ["has", "elevator"]],
