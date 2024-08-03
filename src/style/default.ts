@@ -69,7 +69,8 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "any",
-      ["in", "indoor", ["literal", ["room", "area"]]],
+      ["==", "indoor", "room"],
+      ["==", "indoor",  "area"],
       ["==", "railway", "platform"],
     ],
     id: "indoor-rooms",
