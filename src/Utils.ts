@@ -2,8 +2,6 @@ import type { Level } from "./Types";
 import type { ExpressionSpecification } from "maplibre-gl";
 import type { BBox, Position } from "geojson";
 
-export const EarthRadius = 6371008.8;
-
 export function overlap(bounds1: BBox, bounds2: BBox) {
   const oneRectangleIsOnLeftSideOfOther =
     bounds1[0] > bounds2[2] || bounds2[0] > bounds1[2];
@@ -20,8 +18,7 @@ export function filterWithLevel(
   level: Level,
   showFeaturesWithEmptyLevel: boolean = false,
 ): ExpressionSpecification {
-  const levelFilter: ExpressionSpecification = [
-    "any",
+  const levelFilters: ExpressionSpecification[] = [
     ["==", "level", level.toString()],
     [
       "all",
@@ -52,10 +49,10 @@ export function filterWithLevel(
     return [
       "all",
       initialFilter,
-      ["any", ["!", ["has", "level"]], levelFilter],
+      ["any", ["!", ["has", "level"]], ...levelFilters],
     ];
   } else {
-    return ["all", initialFilter, levelFilter];
+    return ["all", initialFilter, ["any", ...levelFilters]];
   }
 }
 

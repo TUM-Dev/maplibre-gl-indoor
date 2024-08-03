@@ -224,23 +224,14 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "any",
-      [
-        "in",
-        "indoor",
-        [
-          "literal",
-          [
-            "table",
-            "cupboard",
-            "chair",
-            "kitchen",
-            "sofa",
-            "tv",
-            "shelf",
-            "furniture-item",
-          ],
-        ],
-      ],
+      ["==", "indoor","table"],
+      ["==", "indoor","cupboard"],
+      ["==", "indoor","chair"],
+      ["==", "indoor","kitchen"],
+      ["==", "indoor","sofa"],
+      ["==", "indoor","tv"],
+      ["==", "indoor","shelf"],
+      ["==", "indoor","furniture-item"],
       ["==", "trashcan", "yes"],
       ["==", "copier", "yes"],
       ["==", "amenity", "vending_machine"],
@@ -286,7 +277,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
     type: "line",
     source: "indoor",
-    filter: ["all", ["==", "highway", "steps"], ["!", ["has", "conveying"]]],
+    filter: ["all", ["==", "highway", "steps"], ["!has", "conveying"]],
     layout: {
       "line-join": "round",
     },

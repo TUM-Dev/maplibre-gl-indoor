@@ -1,7 +1,7 @@
 import type {
-  ExpressionFilterSpecification,
+  ExpressionSpecification,
   LayerSpecification,
-  SymbolLayerSpecification,
+  SymbolLayerSpecification
 } from "maplibre-gl";
 import { defaultLayers } from "./default";
 
@@ -13,7 +13,7 @@ let layers = defaultLayers;
 const POI_LAYER_ID = "poi-indoor";
 
 type FilterMakiEntry = {
-  filter: ExpressionFilterSpecification;
+  filter: ExpressionSpecification;
   maki: string;
 };
 
@@ -47,9 +47,9 @@ const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
 function createPoiLayers(
   metaLayer: SymbolLayerSpecification,
 ): Array<SymbolLayerSpecification> {
-  const shops = OSM_SHOPS.map((val) => val.shop);
+  const shops:ExpressionSpecification[] = OSM_SHOPS.map((val) => ["!=","shop", val.shop]);
   OSM_FILTER_MAPBOX_MAKI_LIST.push({
-    filter: ["!", ["in", "shop", ["literal", shops]]],
+    filter: ["all", ...shops],
     maki: "shop",
   });
 
