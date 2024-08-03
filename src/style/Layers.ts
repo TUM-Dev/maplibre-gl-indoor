@@ -1,8 +1,9 @@
 import type {
   ExpressionSpecification,
   LayerSpecification,
-  SymbolLayerSpecification
+  SymbolLayerSpecification,
 } from "maplibre-gl";
+
 import { defaultLayers } from "./default";
 
 let layers = defaultLayers;
@@ -18,11 +19,11 @@ type FilterMakiEntry = {
 };
 
 const OSM_SHOPS: { maki: string; shop: string }[] = [
-  { shop: "travel_agency", maki: "suitcase" },
-  { shop: "convenience", maki: "grocery" },
-  { shop: "bakery", maki: "bakery" },
-  { shop: "chemist", maki: "pharmacy" },
-  { shop: "clothes", maki: "clothing-store" },
+  { maki: "suitcase", shop: "travel_agency" },
+  { maki: "grocery", shop: "convenience" },
+  { maki: "bakery", shop: "bakery" },
+  { maki: "pharmacy", shop: "chemist" },
+  { maki: "clothing-store", shop: "clothes" },
 ];
 
 const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
@@ -40,14 +41,18 @@ const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
   { filter: ["==", "highway", "steps"], maki: "entrance" },
   ...OSM_SHOPS.map(
     ({ maki, shop }) =>
-      ({ maki, filter: ["==", "shop", shop] }) as FilterMakiEntry,
+      ({ filter: ["==", "shop", shop], maki }) as FilterMakiEntry,
   ),
 ];
 
 function createPoiLayers(
   metaLayer: SymbolLayerSpecification,
 ): Array<SymbolLayerSpecification> {
-  const shops:ExpressionSpecification[] = OSM_SHOPS.map((val) => ["!=","shop", val.shop]);
+  const shops: ExpressionSpecification[] = OSM_SHOPS.map((val) => [
+    "!=",
+    "shop",
+    val.shop,
+  ]);
   OSM_FILTER_MAPBOX_MAKI_LIST.push({
     filter: ["all", ...shops],
     maki: "shop",

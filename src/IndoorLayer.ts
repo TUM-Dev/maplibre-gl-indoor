@@ -1,18 +1,20 @@
-import { default as turfDistance } from "@turf/distance";
-import IndoorMap from "./IndoorMap";
-import { overlap, filterWithLevel, bboxCenter } from "./Utils";
-
+import type { BBox } from "geojson";
 import type {
-  Map,
   ExpressionSpecification,
   LayerSpecification,
+  Map,
 } from "maplibre-gl";
+
+import { default as turfDistance } from "@turf/distance";
+
 import type { Level } from "./Types";
-import type { BBox } from "geojson";
+
+import IndoorMap from "./IndoorMap";
+import { bboxCenter, filterWithLevel, overlap } from "./Utils";
 
 type SavedFilter = {
-  layerId: string;
   filter: ExpressionSpecification;
+  layerId: string;
 };
 
 const SOURCE_ID = "indoor";
@@ -22,16 +24,16 @@ const SOURCE_ID = "indoor";
  * @param {Map} map the Maplibre map
  */
 class IndoorLayer {
-  _map: Map;
+  _indoorMaps: Array<IndoorMap>;
   _level: Level | null;
 
-  _indoorMaps: Array<IndoorMap>;
-  _selectedMap: IndoorMap | null;
-  _previousSelectedMap: IndoorMap | null;
+  _map: Map;
+  _mapLoadedPromise: Promise<void>;
   _previousSelectedLevel: Level | null;
+  _previousSelectedMap: IndoorMap | null;
 
   _savedFilters: Array<SavedFilter>;
-  _mapLoadedPromise: Promise<void>;
+  _selectedMap: IndoorMap | null;
 
   _updateMapPromise: Promise<void>;
 
@@ -57,166 +59,14 @@ class IndoorLayer {
     this._map.on("moveend", () => this._updateSelectedMapIfNeeded());
   }
 
-  getSelectedMap(): IndoorMap | null {
-    return this._selectedMap;
-  }
-
-  getLevel(): Level | null {
-    return this._level;
-  }
-
-  setLevel(level: Level | null, fireEvent: boolean = true): void {
-    if (this._selectedMap === null) {
-      throw new Error("Cannot set level, no map has been selected");
-    }
-
-    this._level = level;
-    this._updateFiltering();
-    if (fireEvent) {
-      this._map.fire("indoor.level.changed", { level });
-    }
-  }
-
-  /**
-   * ***********************
-   * Handle level change
-   * ***********************
-   */
-
   _addLayerForFiltering(layer: LayerSpecification, beforeLayerId?: string) {
     this._map.addLayer(layer, beforeLayerId);
     this._savedFilters.push({
-      layerId: layer.id,
       filter: (this._map.getFilter(layer.id) as ExpressionSpecification) || [
         "all",
       ],
+      layerId: layer.id,
     });
-  }
-
-  addLayerForFiltering(layer: LayerSpecification, beforeLayerId?: string) {
-    this._addLayerForFiltering(layer, beforeLayerId);
-    this._updateFiltering();
-  }
-
-  _removeLayerForFiltering(layerId: string) {
-    this._savedFilters = this._savedFilters.filter(
-      ({ layerId: id }) => layerId !== id,
-    );
-    this._map.removeLayer(layerId);
-  }
-
-  removeLayerForFiltering(layerId: string) {
-    this._removeLayerForFiltering(layerId);
-    this._updateFiltering();
-  }
-
-  _updateFiltering() {
-    const level = this._level;
-
-    let filterFn: (filter: ExpressionSpecification) => ExpressionSpecification;
-    if (level !== null) {
-      const showFeaturesWithEmptyLevel = this._selectedMap
-        ? this._selectedMap.showFeaturesWithEmptyLevel
-        : false;
-      filterFn = (filter: ExpressionSpecification) =>
-        filterWithLevel(filter, level, showFeaturesWithEmptyLevel);
-    } else {
-      filterFn = (filter: ExpressionSpecification): ExpressionSpecification =>
-        filter;
-    }
-
-    this._savedFilters.forEach(({ layerId, filter }) => {
-      this._map.setFilter(layerId, filterFn(filter));
-    });
-  }
-
-  /**
-   * **************
-   * Handle maps
-   * **************
-   */
-
-  async addMap(map: IndoorMap) {
-    this._indoorMaps.push(map);
-    await this._updateSelectedMapIfNeeded();
-  }
-
-  async removeMap(map: IndoorMap) {
-    this._indoorMaps = this._indoorMaps.filter(
-      (_indoorMap) => _indoorMap !== map,
-    );
-    await this._updateSelectedMapIfNeeded();
-  }
-
-  async _updateSelectedMapIfNeeded() {
-    await this._mapLoadedPromise;
-
-    // Avoid to call "closestMap" or "updateSelectedMap" if the previous call is not finished yet
-    await this._updateMapPromise;
-    this._updateMapPromise = (async () => {
-      const closestMap = this._closestMap();
-      if (closestMap !== this._selectedMap) {
-        this._updateSelectedMap(closestMap);
-      }
-    })();
-    await this._updateMapPromise;
-  }
-
-  _updateSelectedMap(indoorMap: IndoorMap | null) {
-    const previousMap = this._selectedMap;
-
-    // Remove the previous selected map if it exists
-    if (previousMap !== null) {
-      previousMap.layersToHide.forEach((layerId) =>
-        this._map.setLayoutProperty(layerId, "visibility", "visible"),
-      );
-      previousMap.layers.forEach(({ id }) => this._removeLayerForFiltering(id));
-      this._map.removeSource(SOURCE_ID);
-
-      if (!indoorMap) {
-        // Save the previous map level.
-        // It enables the user to exit and re-enter, keeping the same level shown.
-        this._previousSelectedLevel = this._level;
-        this._previousSelectedMap = previousMap;
-      }
-
-      this.setLevel(null, false);
-      this._map.fire("indoor.map.unloaded", { indoorMap: previousMap });
-    }
-
-    this._selectedMap = indoorMap;
-    if (!indoorMap) {
-      return;
-    }
-
-    const { geojson, layers, levelsRange, beforeLayerId } = indoorMap;
-
-    // Add map source
-    this._map.addSource(SOURCE_ID, {
-      type: "geojson",
-      data: geojson,
-    });
-
-    // Add layers and save filters
-    layers.forEach((layer) => this._addLayerForFiltering(layer, beforeLayerId));
-
-    // Hide layers which can overlap for rendering
-    indoorMap.layersToHide.forEach((layerId) =>
-      this._map.setLayoutProperty(layerId, "visibility", "none"),
-    );
-
-    // Restore the same level when the previous selected map is the same.
-    const level =
-      this._previousSelectedMap === indoorMap
-        ? this._previousSelectedLevel
-        : Math.max(
-            Math.min(indoorMap.defaultLevel, levelsRange.max),
-            levelsRange.min,
-          );
-
-    this.setLevel(level, false);
-
-    this._map.fire("indoor.map.loaded", { indoorMap });
   }
 
   _closestMap() {
@@ -260,6 +110,158 @@ class IndoorLayer {
       }
     }
     return closestMap;
+  }
+
+  _removeLayerForFiltering(layerId: string) {
+    this._savedFilters = this._savedFilters.filter(
+      ({ layerId: id }) => layerId !== id,
+    );
+    this._map.removeLayer(layerId);
+  }
+
+  /**
+   * ***********************
+   * Handle level change
+   * ***********************
+   */
+
+  _updateFiltering() {
+    const level = this._level;
+
+    let filterFn: (filter: ExpressionSpecification) => ExpressionSpecification;
+    if (level !== null) {
+      const showFeaturesWithEmptyLevel = this._selectedMap
+        ? this._selectedMap.showFeaturesWithEmptyLevel
+        : false;
+      filterFn = (filter: ExpressionSpecification) =>
+        filterWithLevel(filter, level, showFeaturesWithEmptyLevel);
+    } else {
+      filterFn = (filter: ExpressionSpecification): ExpressionSpecification =>
+        filter;
+    }
+
+    this._savedFilters.forEach(({ filter, layerId }) => {
+      this._map.setFilter(layerId, filterFn(filter));
+    });
+  }
+
+  _updateSelectedMap(indoorMap: IndoorMap | null) {
+    const previousMap = this._selectedMap;
+
+    // Remove the previous selected map if it exists
+    if (previousMap !== null) {
+      previousMap.layersToHide.forEach((layerId) =>
+        this._map.setLayoutProperty(layerId, "visibility", "visible"),
+      );
+      previousMap.layers.forEach(({ id }) => this._removeLayerForFiltering(id));
+      this._map.removeSource(SOURCE_ID);
+
+      if (!indoorMap) {
+        // Save the previous map level.
+        // It enables the user to exit and re-enter, keeping the same level shown.
+        this._previousSelectedLevel = this._level;
+        this._previousSelectedMap = previousMap;
+      }
+
+      this.setLevel(null, false);
+      this._map.fire("indoor.map.unloaded", { indoorMap: previousMap });
+    }
+
+    this._selectedMap = indoorMap;
+    if (!indoorMap) {
+      return;
+    }
+
+    const { beforeLayerId, geojson, layers, levelsRange } = indoorMap;
+
+    // Add map source
+    this._map.addSource(SOURCE_ID, {
+      data: geojson,
+      type: "geojson",
+    });
+
+    // Add layers and save filters
+    layers.forEach((layer) => this._addLayerForFiltering(layer, beforeLayerId));
+
+    // Hide layers which can overlap for rendering
+    indoorMap.layersToHide.forEach((layerId) =>
+      this._map.setLayoutProperty(layerId, "visibility", "none"),
+    );
+
+    // Restore the same level when the previous selected map is the same.
+    const level =
+      this._previousSelectedMap === indoorMap
+        ? this._previousSelectedLevel
+        : Math.max(
+            Math.min(indoorMap.defaultLevel, levelsRange.max),
+            levelsRange.min,
+          );
+
+    this.setLevel(level, false);
+
+    this._map.fire("indoor.map.loaded", { indoorMap });
+  }
+
+  async _updateSelectedMapIfNeeded() {
+    await this._mapLoadedPromise;
+
+    // Avoid to call "closestMap" or "updateSelectedMap" if the previous call is not finished yet
+    await this._updateMapPromise;
+    this._updateMapPromise = (async () => {
+      const closestMap = this._closestMap();
+      if (closestMap !== this._selectedMap) {
+        this._updateSelectedMap(closestMap);
+      }
+    })();
+    await this._updateMapPromise;
+  }
+
+  addLayerForFiltering(layer: LayerSpecification, beforeLayerId?: string) {
+    this._addLayerForFiltering(layer, beforeLayerId);
+    this._updateFiltering();
+  }
+
+  async addMap(map: IndoorMap) {
+    this._indoorMaps.push(map);
+    await this._updateSelectedMapIfNeeded();
+  }
+
+  /**
+   * **************
+   * Handle maps
+   * **************
+   */
+
+  getLevel(): Level | null {
+    return this._level;
+  }
+
+  getSelectedMap(): IndoorMap | null {
+    return this._selectedMap;
+  }
+
+  removeLayerForFiltering(layerId: string) {
+    this._removeLayerForFiltering(layerId);
+    this._updateFiltering();
+  }
+
+  async removeMap(map: IndoorMap) {
+    this._indoorMaps = this._indoorMaps.filter(
+      (_indoorMap) => _indoorMap !== map,
+    );
+    await this._updateSelectedMapIfNeeded();
+  }
+
+  setLevel(level: Level | null, fireEvent: boolean = true): void {
+    if (this._selectedMap === null) {
+      throw new Error("Cannot set level, no map has been selected");
+    }
+
+    this._level = level;
+    this._updateFiltering();
+    if (fireEvent) {
+      this._map.fire("indoor.level.changed", { level });
+    }
   }
 }
 

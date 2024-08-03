@@ -1,6 +1,7 @@
+import type { BBox, Feature, FeatureCollection, Geometry } from "geojson";
+
 import bbox from "@turf/bbox";
 
-import type { BBox, Feature, FeatureCollection, Geometry } from "geojson";
 import type { LevelsRange } from "./Types";
 
 /**
@@ -15,7 +16,7 @@ class GeoJsonHelper {
    */
   static extractLevelFromFeature(
     feature: Feature,
-  ): LevelsRange | number | null {
+  ): LevelsRange | null | number {
     if (!!feature.properties && feature.properties.level !== null) {
       const propertyLevel = feature.properties["level"];
       if (typeof propertyLevel === "string") {
@@ -30,8 +31,8 @@ class GeoJsonHelper {
           const level2 = parseFloat(splitLevel[1]);
           if (!isNaN(level1) && !isNaN(level2)) {
             return {
-              min: Math.min(level1, level2),
               max: Math.max(level1, level2),
+              min: Math.min(level1, level2),
             };
           }
         }
@@ -47,8 +48,8 @@ class GeoJsonHelper {
    * @returns {Object} the levels range and bounds.
    */
   static extractLevelsRangeAndBounds(geojson: FeatureCollection<Geometry>): {
-    levelsRange: LevelsRange;
     bounds: BBox;
+    levelsRange: LevelsRange;
   } {
     let minLevel = Infinity;
     let maxLevel = -Infinity;
@@ -77,8 +78,8 @@ class GeoJsonHelper {
       throw new Error("No level found");
     }
     return {
-      levelsRange: { min: minLevel, max: maxLevel },
       bounds,
+      levelsRange: { max: maxLevel, min: minLevel },
     };
   }
 }

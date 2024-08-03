@@ -1,18 +1,19 @@
-import Style from "./style";
-import GeoJsonHelper from "./GeojsonHelper";
+import type { BBox, FeatureCollection, Geometry } from "geojson";
+import type { LayerSpecification } from "maplibre-gl";
 
 import type { IndoorMapOptions, LevelsRange } from "./Types";
-import type { LayerSpecification } from "maplibre-gl";
-import type { BBox, FeatureCollection, Geometry } from "geojson";
+
+import GeoJsonHelper from "./GeojsonHelper";
+import Style from "./style";
 
 class IndoorMap {
+  beforeLayerId?: string;
   bounds: BBox;
+  defaultLevel: number;
   geojson: FeatureCollection<Geometry>;
   layers: Array<LayerSpecification>;
-  levelsRange: LevelsRange;
-  beforeLayerId?: string;
   layersToHide: Array<string>;
-  defaultLevel: number;
+  levelsRange: LevelsRange;
   showFeaturesWithEmptyLevel: boolean;
 
   constructor(

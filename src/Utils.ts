@@ -1,6 +1,7 @@
-import type { Level } from "./Types";
-import type { ExpressionSpecification } from "maplibre-gl";
 import type { BBox, Position } from "geojson";
+import type { ExpressionSpecification } from "maplibre-gl";
+
+import type { Level } from "./Types";
 
 export function overlap(bounds1: BBox, bounds2: BBox) {
   const oneRectangleIsOnLeftSideOfOther =

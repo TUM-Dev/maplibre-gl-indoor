@@ -11,7 +11,7 @@
   ],
   "version": "0.0.4",
   "scripts": {
-    "lint": "eslint src && tsc --noEmit && prettier --write .",
+    "lint": "eslint src --fix && tsc --noEmit && prettier --write .",
     "build": "rm -fr dist && npm run build-lib && npm run build-dts",
     "build-lib": "tsc && vite build --emptyOutDir -c vite.lib.config.js",
     "build-dts": "dts-bundle-generator -o dist/maplibre-gl-indoor.d.ts src/index.ts"
@@ -39,6 +39,7 @@
     "@typescript-eslint/parser": "8.0.0",
     "dts-bundle-generator": "9.5.1",
     "eslint": "9.8.0",
+    "eslint-plugin-perfectionist": "3.1.0",
     "events": "3.3.0",
     "prettier": "3.3.3",
     "typescript": "5.5.4",

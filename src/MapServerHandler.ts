@@ -1,33 +1,34 @@
+import type { BBox } from "geojson";
+import type { Map } from "maplibre-gl";
+
 import { default as turfDestination } from "@turf/destination";
 import { default as turfDistance } from "@turf/distance";
+
+import type { IndoorMapOptions, MapGLWithIndoor } from "./Types";
 
 import addIndoorTo from "./addIndoorTo";
 import IndoorMap from "./IndoorMap";
 import { bboxContains } from "./Utils";
 
-import type { MapGLWithIndoor, IndoorMapOptions } from "./Types";
-import type { Map } from "maplibre-gl";
-import type { BBox } from "geojson";
-
 type RemoteMap = {
+  indoorMap?: IndoorMap;
   name: string;
   path: string;
-  indoorMap?: IndoorMap;
 };
 
 const MIN_ZOOM_TO_DOWNLOAD = 17;
 const AREA_TO_DOWNLOAD = 1000; // in terms of distance from user
 
 class MapServerHandler {
-  serverUrl: string;
-
-  map: MapGLWithIndoor;
-  remoteMapsDownloaded: RemoteMap[];
   downloadedBounds: BBox | null;
 
-  loadMapsPromise: Promise<void> = Promise.resolve();
-
   indoorMapOptions?: IndoorMapOptions;
+  loadMapsPromise: Promise<void> = Promise.resolve();
+  map: MapGLWithIndoor;
+
+  remoteMapsDownloaded: RemoteMap[];
+
+  serverUrl: string;
 
   private constructor(
     serverUrl: string,
@@ -46,6 +47,17 @@ class MapServerHandler {
       map.on("load", () => this.loadMapsIfNecessary());
     }
     map.on("move", () => this.loadMapsIfNecessary());
+  }
+
+  static manage(server: string, map: Map, indoorMapOptions?: IndoorMapOptions) {
+    return new MapServerHandler(server, addIndoorTo(map), indoorMapOptions);
+  }
+
+  private async addCustomMap(map: RemoteMap) {
+    const geojson = await (await fetch(this.serverUrl + map.path)).json();
+    map.indoorMap = IndoorMap.fromGeojson(geojson, this.indoorMapOptions);
+    await this.map.indoor.addMap(map.indoorMap);
+    this.remoteMapsDownloaded.push(map);
   }
 
   private async loadMapsIfNecessary() {
@@ -126,20 +138,9 @@ class MapServerHandler {
     mapsToRemove.forEach(this.removeCustomMap.bind(this));
   }
 
-  private async addCustomMap(map: RemoteMap) {
-    const geojson = await (await fetch(this.serverUrl + map.path)).json();
-    map.indoorMap = IndoorMap.fromGeojson(geojson, this.indoorMapOptions);
-    await this.map.indoor.addMap(map.indoorMap);
-    this.remoteMapsDownloaded.push(map);
-  }
-
   private async removeCustomMap(map: RemoteMap) {
     await this.map.indoor.removeMap(map.indoorMap!);
     this.remoteMapsDownloaded.splice(this.remoteMapsDownloaded.indexOf(map), 1);
-  }
-
-  static manage(server: string, map: Map, indoorMapOptions?: IndoorMapOptions) {
-    return new MapServerHandler(server, addIndoorTo(map), indoorMapOptions);
   }
 }
 
