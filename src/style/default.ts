@@ -81,7 +81,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
   },
   {
-    filter: ["any", ["==", "indoor", "room"]],
+    filter: ["==", "indoor", "room"],
     id: "indoor-rooms-borders",
     type: "line",
     source: "indoor",
