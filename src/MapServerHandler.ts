@@ -81,20 +81,15 @@ class MapServerHandler {
     private async loadMapsInBounds(bounds: BBox) {
         const url = this.serverUrl + `/maps-in-bounds/${bounds[0]},${bounds[1]},${bounds[2]},${bounds[3]}`;
         const maps: RemoteMap[] = await (await fetch(url)).json();
-
-        const mapsToRemove = this.remoteMapsDownloaded.reduce((acc: RemoteMap[], map) => {
+        const mapsToRemove: RemoteMap[] =[]
+        const mapsToAdd: RemoteMap[]=[]
+        for (const map of maps){
             if (!maps.find(_map => _map.path === map.path)) {
-                acc.push(map);
+                mapsToRemove.push(map);
+            } else if (!this.remoteMapsDownloaded.find(_map => _map.path === map.path)){
+                mapsToAdd.push(map)
             }
-            return acc;
-        }, []);
-
-        const mapsToAdd = maps.reduce((acc: RemoteMap[], map) => {
-            if (!this.remoteMapsDownloaded.find(_map => _map.path === map.path)) {
-                acc.push(map);
-            }
-            return acc;
-        }, []);
+        }
 
         mapsToAdd.forEach(this.addCustomMap.bind(this));
         mapsToRemove.forEach(this.removeCustomMap.bind(this));

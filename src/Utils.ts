@@ -17,10 +17,6 @@ export function filterWithLevel(initialFilter: ExpressionSpecification, level: L
     const levelFilter: ExpressionSpecification = [
         'all',
         [
-            "has",
-            "level"
-        ],
-        [
             "any",
             [
                 "==",
@@ -84,9 +80,9 @@ export function filterWithLevel(initialFilter: ExpressionSpecification, level: L
             initialFilter,
             [
                 'any',
-                ["!has", "level"],
+                ["!", ["has", "level"]],
                 levelFilter,
-            ],
+            ] ,
         ];
     } else {
         return [

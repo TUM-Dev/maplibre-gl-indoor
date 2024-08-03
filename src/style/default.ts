@@ -1,4 +1,6 @@
-[
+import type {LayerSpecification} from "maplibre-gl";
+
+export const defaultLayers: Array<LayerSpecification> = [
     {
         "filter": [
             "any",

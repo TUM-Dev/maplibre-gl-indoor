@@ -1,3 +1,4 @@
-import DefaultLayers from './DefaultLayers';
+import DefaultLayers from './Layers';
+import {defaultLayers} from "./default";
 
-export default { DefaultLayers };
+export default { DefaultLayers, defaultLayers };

@@ -1,4 +1,3 @@
-import type { FeatureCollection, Geometry } from 'geojson';
 import type {
     Map,
     Listener,
