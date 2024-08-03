@@ -1,6 +1,11 @@
-name: build
+name: CI
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,6 +21,12 @@ jobs:
         uses: actions/setup-node@v4
       - run: npm ci
 
-      - run: npm run build-lib
-      - run: npm run build-dts
+      - run: npm run build
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
       - run: npm run lint
