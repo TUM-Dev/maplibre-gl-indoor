@@ -12,7 +12,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", "indoor", "level"],
+    filter: ["==", ["get", "indoor"], "level"],
     id: "level-background",
     paint: {
       "fill-color": "#E6E4E0",
@@ -22,7 +22,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", "leisure", "garden"],
+    filter: ["==", ["get", "leisure"], "garden"],
     id: "indoor-gardens",
     layout: {
       visibility: "visible",
@@ -35,7 +35,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", "amenity", "parking"],
+    filter: ["==", ["get", "amenity"], "parking"],
     id: "indoor-parkings",
     paint: {
       "fill-color": "#D7CCC8",
@@ -46,7 +46,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", "amenity", "parking"],
+    filter: ["==", ["get", "amenity"], "parking"],
     id: "indoor-parkings-patterns",
     paint: {
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 0.1],
@@ -57,7 +57,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", "indoor", "corridor"],
+    filter: ["==", ["get", "indoor"],"corridor"],
     id: "indoor-corridors",
     paint: {
       "fill-color": "#D7CCC8",
@@ -69,9 +69,9 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "any",
-      ["==", "indoor", "room"],
-      ["==", "indoor", "area"],
-      ["==", "railway", "platform"],
+      ["==", ["get", "indoor"], "room"],
+      ["==", ["get", "indoor"], "area"],
+      ["==", ["get", "railway"], "platform"],
     ],
     id: "indoor-rooms",
     paint: {
@@ -82,7 +82,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", "indoor", "room"],
+    filter: ["==", ["get", "indoor"] ,"room"],
     id: "indoor-rooms-borders",
     paint: {
       "line-color": "#000",
@@ -93,7 +93,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "line",
   },
   {
-    filter: ["==", "indoor", "area"],
+    filter: ["==", ["get", "indoor"], "area"],
     id: "indoor-areas",
     paint: {
       "fill-color": "#D7CCC8",
@@ -103,7 +103,10 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["all", ["==", "highway", "pedestrian"], ["has", "level"]],
+    filter: ["all",
+      ["==", ["get", "highway"], "pedestrian"],
+      ["has", "level"]
+    ],
     id: "indoor-highways-area",
     paint: {
       "fill-color": [
@@ -122,7 +125,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["all", ["==", "highway", "pedestrian"], ["has", "level"]],
+    filter: ["all", ["==", ["get", "highway"], "pedestrian"], ["has", "level"]],
     id: "indoor-highways-area-pattern",
     paint: {
       "fill-color": "hsl(0, 0%, 100%)",
@@ -134,7 +137,10 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["all", ["==", "indoor", "area"], ["==", "balcony", "yes"]],
+    filter: ["all",
+      ["==", ["get", "indoor"], "area"],
+      ["==", ["get", "balcony"], "yes"]
+    ],
     id: "indoor-balcony",
     paint: {
       "fill-color": "#BDBDBD",
@@ -146,9 +152,9 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "any",
-      ["==", "stairs", "yes"],
-      ["==", "elevator", "yes"],
-      ["==", "highway", "elevator"],
+      ["==", ["get", "stairs"], "yes"],
+      ["==", ["get", "elevator"], "yes"],
+      ["==", ["get", "highway"], "elevator"],
     ],
     id: "indoor-stairs",
     paint: {
@@ -160,7 +166,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", "indoor", "wall"],
+    filter: ["==", ["get", "indoor"], "wall"],
     id: "indoor-walls",
     paint: {
       "line-color": "#000000",
@@ -180,7 +186,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "line",
   },
   {
-    filter: ["==", "indoor", "block"],
+    filter: ["==", ["get", "indoor"], "block"],
     id: "indoor-blocks",
     paint: {
       "fill-color": "#000000",
@@ -190,7 +196,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", "handrail", "yes"],
+    filter: ["==", ["get", "handrail"], "yes"],
     id: "indoor-handrail",
     paint: {
       "line-color": "#000000",
@@ -200,7 +206,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "line",
   },
   {
-    filter: ["==", "railway", "rail"],
+    filter: ["==", ["get", "railway"], "rail"],
     id: "indoor-rails",
     paint: {
       "line-color": "hsl(230, 10%, 74%)",
@@ -210,7 +216,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "line",
   },
   {
-    filter: ["==", "railway", "rail"],
+    filter: ["==", ["get", "railway"], "rail"],
     id: "indoor-rails-tracks",
     paint: {
       "line-color": "hsl(230,10%,74%)",
@@ -232,17 +238,10 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "any",
-      ["==", "indoor", "table"],
-      ["==", "indoor", "cupboard"],
-      ["==", "indoor", "chair"],
-      ["==", "indoor", "kitchen"],
-      ["==", "indoor", "sofa"],
-      ["==", "indoor", "tv"],
-      ["==", "indoor", "shelf"],
-      ["==", "indoor", "furniture-item"],
-      ["==", "trashcan", "yes"],
-      ["==", "copier", "yes"],
-      ["==", "amenity", "vending_machine"],
+      ["in", ["get", "indoor"], ["literal",["table", "cupboard","chair","kitchen","sofa","tv","shelf","furniture-item",]]],
+      ["==", ["get", "trashcan"], "yes"],
+      ["==", ["get", "copier"], "yes"],
+      ["==", ["get", "amenity"], "vending_machine"],
     ],
     id: "indoor-furniture",
     paint: {
@@ -254,7 +253,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["all", ["==", "highway", "steps"], ["!", ["has", "conveying"]]],
+    filter: ["all", ["==", ["get", "highway"], "steps"], ["!", ["has", "conveying"]]],
     id: "indoor-steps",
     layout: {
       "line-join": "round",
@@ -289,7 +288,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "line",
   },
   {
-    filter: ["all", ["==", "highway", "steps"], ["has", "conveying"]],
+    filter: ["all", ["==", ["get", "highway"], "steps"], ["has", "conveying"]],
     id: "indoor-conveying",
     layout: {
       "line-join": "round",
@@ -324,7 +323,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "line",
   },
   {
-    filter: ["==", "indoor", "room"],
+    filter: ["==", ["get", "indoor"], "room"],
     id: "poi-indoor-text-ref",
     layout: {
       "symbol-placement": "point",
@@ -363,12 +362,12 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "symbol",
   },
   {
-    filter: ["boolean", false],
+    filter: ["boolean", false], // changed in the poi-logic
     id: "poi-indoor",
     layout: {
       "icon-allow-overlap": true,
       "icon-anchor": "center",
-      "icon-image": ["concat", ["get", "maki"], "-15"],
+      "icon-image": ["get", "maki"], // changed in the poi-logic
       "icon-optional": false,
       "icon-size": ["interpolate", ["linear"], ["zoom"], 17, 0.5, 20, 1],
       "symbol-placement": "point",

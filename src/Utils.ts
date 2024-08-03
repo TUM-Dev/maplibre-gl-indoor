@@ -19,32 +19,33 @@ export function filterWithLevel(
   level: Level,
   showFeaturesWithEmptyLevel: boolean = false,
 ): ExpressionSpecification {
-  const levelFilters: ExpressionSpecification[] = [
-    ["==", "level", level.toString()],
-    [
-      "all",
-      ["!=", ["index-of", ";", ["get", "level"]], -1],
+  const levelBetween: ExpressionSpecification = [
+    "all",
+    ["in", ";", ["get", "level"]],
+    [ // level=LEVEL;... => if LEVEL <= current_level, we can display
+      "<=",
       [
-        ">=",
-        level,
-        [
-          "to-number",
-          ["slice", ["get", "level"], 0, ["index-of", ";", ["get", "level"]]],
-        ],
+        "to-number",
+        ["slice", ["get", "level"], 0, ["index-of", ";", ["get", "level"]]],
       ],
-      [
-        "<=",
-        level,
-        [
-          "to-number",
-          [
-            "slice",
-            ["get", "level"],
-            ["+", ["index-of", ";", ["get", "level"]], 1],
-          ],
-        ],
-      ],
+      level,
     ],
+    [ // level=...;LEVEL => if LEVEL >= current_level, we can display
+      ">=",
+      [
+        "to-number",
+        [
+          "slice",
+          ["get", "level"],
+          ["+", ["index-of", ";", ["get", "level"]], 1],
+        ],
+      ],
+      level,
+    ],
+  ];
+  const levelFilters: ExpressionSpecification[] = [
+    levelBetween,
+    ["==", ["get", "level"], level.toString()],
   ];
   if (showFeaturesWithEmptyLevel) {
     return [
