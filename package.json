@@ -10,7 +10,7 @@
   ],
   "private": "true",
   "scripts": {
-    "build-lib": "tsc && vite build --emptyOutDir -c vite.lib.config.js",
+    "build": "tsc && vite build --emptyOutDir -c vite.lib.config.js",
     "serve": "vite preview",
     "lint": "eslint src && tsc --noEmit && prettier --write .",
     "build-dts": "dts-bundle-generator -o dist/lib/map-gl-indoor.d.ts src/index.ts"
