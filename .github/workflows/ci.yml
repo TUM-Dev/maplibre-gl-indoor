@@ -19,14 +19,24 @@ jobs:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v4
-      - run: npm ci
-
-      - run: npm run build
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.5.0
+          package_json_file: package.json
+          run_install: |
+            - args: [--frozen-lockfile, --strict-peer-dependencies]
+      - run: pnpm run build
   lint:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.5.0
+          package_json_file: package.json
+          run_install: |
+            - args: [--frozen-lockfile, --strict-peer-dependencies]
       - run: npm ci
       - run: npm run lint
