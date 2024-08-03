@@ -11,7 +11,7 @@
   "dependencies": {
     "vue": "3.4.31",
     "maplibre-gl": "4.5.1",
-    "maplibre-gl-indoor": "0.0.3"
+    "maplibre-gl-indoor": "0.0.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.0.5",
