@@ -21,14 +21,14 @@ const indoorMap = ref<MapGLWithIndoor | null>(null);
 async function createMap() {
   const baseMap = new Map({
     style: "https://nav.tum.de/maps/styles/osm-liberty/style.json",
-    center: [8.3909479, 49.0332499],
+    center: [2.3596569, 48.8765734],
     zoom: 17.5,
     container: "map",
     hash: true,
     antialias: true,
   });
   const map = addIndoorTo(baseMap);
-  const geojson = await (await fetch("/example.geojson")).json();
+  const geojson = await (await fetch("/gare-de-l-est.geojson")).json();
   let indoorJSONMap = IndoorMap.fromGeojson(geojson);
   await map.indoor.addMap(indoorJSONMap);
 
