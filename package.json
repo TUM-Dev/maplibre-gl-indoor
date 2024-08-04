@@ -9,7 +9,7 @@
     "dist/*",
     "src/"
   ],
-  "version": "0.0.6",
+  "version": "0.0.7",
   "scripts": {
     "lint": "eslint src --fix && tsc --noEmit && prettier --write .",
     "build": "rm -fr dist && npm run build-lib && npm run build-dts",

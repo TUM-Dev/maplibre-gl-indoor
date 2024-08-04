@@ -5,7 +5,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: ["any", ["has", "building"], ["has", "building:part"]],
     id: "buildings-background",
     paint: {
-      "fill-color": "#E6E4E0",
+      "fill-color": "#FFFFFF",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
@@ -15,7 +15,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: ["==", ["get", "indoor"], "level"],
     id: "level-background",
     paint: {
-      "fill-color": "#E6E4E0",
+      "fill-color": "#FBF9FA",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
@@ -28,7 +28,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       visibility: "visible",
     },
     paint: {
-      "fill-color": "#cde8a2",
+      "fill-color": "#D8E5A4",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
     source: "indoor",
@@ -38,7 +38,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: ["==", ["get", "amenity"], "parking"],
     id: "indoor-parkings",
     paint: {
-      "fill-color": "#D7CCC8",
+      "fill-color": "#fbeada",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
       "fill-outline-color": "#000000",
     },
@@ -60,8 +60,10 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: ["==", ["get", "indoor"],"corridor"],
     id: "indoor-corridors",
     paint: {
-      "fill-color": "#D7CCC8",
+      "fill-antialias": true, // otherwise the outline is invisible sometimes..,
+      "fill-color": "#8dd1fc",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-outline-color": "#000",
     },
     source: "indoor",
     type: "fill",
@@ -75,8 +77,10 @@ export const defaultLayers: Array<LayerSpecification> = [
     ],
     id: "indoor-rooms",
     paint: {
-      "fill-color": "#A1887F",
+      "fill-antialias": true, // otherwise the outline is invisible sometimes..
+      "fill-color": "#e0e0e0",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-outline-color": "#000",
     },
     source: "indoor",
     type: "fill",
@@ -96,7 +100,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: ["==", ["get", "indoor"], "area"],
     id: "indoor-areas",
     paint: {
-      "fill-color": "#D7CCC8",
+      "fill-color": "#b9e1ff",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
     source: "indoor",
@@ -158,7 +162,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     ],
     id: "indoor-stairs",
     paint: {
-      "fill-color": "#7B635A",
+      "fill-color": "#5a7c94",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
       "fill-outline-color": "#000000",
     },
@@ -329,8 +333,16 @@ export const defaultLayers: Array<LayerSpecification> = [
       "symbol-placement": "point",
       "text-allow-overlap": false,
       "text-anchor": "center",
-      "text-field": ["to-string", ["get", "name"]],
-      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Regular"],
+      "text-field": [
+        "format",
+        ["get", "name"],
+        {"font-scale": 0.8},
+        "\n",
+        {},
+        ["get", "ref"],
+        {"font-scale": 0.6}
+      ],
+      "text-font": ["Roboto Regular"],
       "text-ignore-placement": false,
       "text-letter-spacing": 0.02,
       "text-line-height": 1.2,
@@ -343,8 +355,8 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
     minzoom: 17,
     paint: {
-      "text-color": "#65513d",
-      "text-halo-color": "#ffffff",
+      "text-color": "#072140",
+      "text-halo-color": "rgb(194, 215, 239, 0.3)",
       "text-halo-width": 1,
       "text-opacity": [
         "interpolate",
@@ -374,8 +386,16 @@ export const defaultLayers: Array<LayerSpecification> = [
       "symbol-spacing": 250,
       "text-allow-overlap": false,
       "text-anchor": "top",
-      "text-field": ["to-string", ["get", "name"]],
-      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Regular"],
+      "text-field": [
+        "format",
+        ["get", "name"],
+        {"font-scale": 0.8},
+        "\n",
+        {},
+        ["get", "ref"],
+        {"font-scale": 0.6}
+      ],
+      "text-font": ["Roboto Regular"],
       "text-ignore-placement": false,
       "text-letter-spacing": 0.02,
       "text-line-height": 1.2,
@@ -400,8 +420,8 @@ export const defaultLayers: Array<LayerSpecification> = [
         19,
         1,
       ],
-      "text-color": "#65513d",
-      "text-halo-color": "#ffffff",
+      "text-color": "#072140",
+      "text-halo-color": "rgb(194, 215, 239, 0.3)",
       "text-halo-width": 1,
       "text-opacity": [
         "interpolate",
