@@ -51,6 +51,6 @@
     "@turf/bbox": "7.1.0",
     "@turf/destination": "7.1.0",
     "@turf/distance": "7.1.0",
-    "maplibre-gl": "4.5.1"
+    "maplibre-gl": "4.5.2"
   }
 }

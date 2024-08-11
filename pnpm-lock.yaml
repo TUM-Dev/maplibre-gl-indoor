@@ -18,8 +18,8 @@ importers:
         specifier: 7.1.0
         version: 7.1.0
       maplibre-gl:
-        specifier: 4.5.1
-        version: 4.5.1
+        specifier: 4.5.2
+        version: 4.5.2
     devDependencies:
       '@eslint/js':
         specifier: ^9.8.0
@@ -828,8 +828,8 @@ packages:
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
 
-  maplibre-gl@4.5.1:
-    resolution: {integrity: sha512-pKFDK8ZU2atwZWC8gdPVhN7Bf5HIPgtA+IG/iQ7J6WgmqSwCSmylc5q3stahWqXfx9PYUwVNJITrp1Hw96SUiA==}
+  maplibre-gl@4.5.2:
+    resolution: {integrity: sha512-vlWL9EY2bSGg5FAt0mKPfYqlfX15uLW5D3kKv4Xjn54nIVn01MKdfUJMAVIr+8fXVqfSX6c095Iy5XnV+T76kQ==}
     engines: {node: '>=16.14.0', npm: '>=8.1.0'}
 
   merge2@1.4.1:
@@ -1859,7 +1859,7 @@ snapshots:
 
   lodash.merge@4.6.2: {}
 
-  maplibre-gl@4.5.1:
+  maplibre-gl@4.5.2:
     dependencies:
       '@mapbox/geojson-rewind': 0.5.2
       '@mapbox/jsonlint-lines-primitives': 2.0.2
