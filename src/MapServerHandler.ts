@@ -54,7 +54,7 @@ class MapServerHandler {
   }
 
   private async addCustomMap(map: RemoteMap) {
-    const geojson = await (await fetch(this.serverUrl + map.path)).json();
+    const geojson = await (await fetch(this.serverUrl + "/indoor/" + map.path)).json();
     map.indoorMap = IndoorMap.fromGeojson(geojson, this.indoorMapOptions);
     await this.map.indoor.addMap(map.indoorMap);
     this.remoteMapsDownloaded.push(map);
@@ -118,9 +118,7 @@ class MapServerHandler {
   }
 
   private async loadMapsInBounds(bounds: BBox) {
-    const url =
-      this.serverUrl +
-      `/maps-in-bounds/${bounds[0]},${bounds[1]},${bounds[2]},${bounds[3]}`;
+    const url = `${this.serverUrl}/indoor?bbox=${bounds[0]},${bounds[1]},${bounds[2]},${bounds[3]}`;
     const maps: RemoteMap[] = await (await fetch(url)).json();
     const mapsToRemove: RemoteMap[] = [];
     const mapsToAdd: RemoteMap[] = [];
