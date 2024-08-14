@@ -13,7 +13,7 @@ import { bboxContains } from "./Utils";
 type RemoteMap = {
   indoorMap?: IndoorMap;
   name: string;
-  path: string;
+  url: string;
 };
 
 const MIN_ZOOM_TO_DOWNLOAD = 17;
@@ -54,7 +54,7 @@ class MapServerHandler {
   }
 
   private async addCustomMap(map: RemoteMap) {
-    const geojson = await (await fetch(this.serverUrl + "/indoor/" + map.path)).json();
+    const geojson = await (await fetch(map.url)).json();
     map.indoorMap = IndoorMap.fromGeojson(geojson, this.indoorMapOptions);
     await this.map.indoor.addMap(map.indoorMap);
     this.remoteMapsDownloaded.push(map);
@@ -123,10 +123,10 @@ class MapServerHandler {
     const mapsToRemove: RemoteMap[] = [];
     const mapsToAdd: RemoteMap[] = [];
     for (const map of maps) {
-      if (!maps.find((_map) => _map.path === map.path)) {
+      if (!maps.find((_map) => _map.url === map.url)) {
         mapsToRemove.push(map);
       } else if (
-        !this.remoteMapsDownloaded.find((_map) => _map.path === map.path)
+        !this.remoteMapsDownloaded.find((_map) => _map.url === map.url)
       ) {
         mapsToAdd.push(map);
       }
