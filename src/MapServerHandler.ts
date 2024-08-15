@@ -118,7 +118,7 @@ class MapServerHandler {
   }
 
   private async loadMapsInBounds(bounds: BBox) {
-    const url = `${this.serverUrl}/indoor?bbox=${bounds[0]},${bounds[1]},${bounds[2]},${bounds[3]}`;
+    const url = `${this.serverUrl}?bbox=${bounds[0]},${bounds[1]},${bounds[2]},${bounds[3]}`;
     const maps: RemoteMap[] = await (await fetch(url)).json();
     const mapsToRemove: RemoteMap[] = [];
     const mapsToAdd: RemoteMap[] = [];
