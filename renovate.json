@@ -1,8 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "group:recommended",
-    "group:allNonMajor"
-  ]
+  "extends": ["config:recommended", "group:recommended", "group:allNonMajor"]
 }

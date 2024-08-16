@@ -57,7 +57,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", ["get", "indoor"],"corridor"],
+    filter: ["==", ["get", "indoor"], "corridor"],
     id: "indoor-corridors",
     paint: {
       "fill-antialias": true, // otherwise the outline is invisible sometimes..,
@@ -86,7 +86,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", ["get", "indoor"] ,"room"],
+    filter: ["==", ["get", "indoor"], "room"],
     id: "indoor-rooms-borders",
     paint: {
       "line-color": "#000",
@@ -107,10 +107,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["all",
-      ["==", ["get", "highway"], "pedestrian"],
-      ["has", "level"]
-    ],
+    filter: ["all", ["==", ["get", "highway"], "pedestrian"], ["has", "level"]],
     id: "indoor-highways-area",
     paint: {
       "fill-color": [
@@ -141,9 +138,10 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["all",
+    filter: [
+      "all",
       ["==", ["get", "indoor"], "area"],
-      ["==", ["get", "balcony"], "yes"]
+      ["==", ["get", "balcony"], "yes"],
     ],
     id: "indoor-balcony",
     paint: {
@@ -242,7 +240,23 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "any",
-      ["in", ["get", "indoor"], ["literal",["table", "cupboard","chair","kitchen","sofa","tv","shelf","furniture-item",]]],
+      [
+        "in",
+        ["get", "indoor"],
+        [
+          "literal",
+          [
+            "table",
+            "cupboard",
+            "chair",
+            "kitchen",
+            "sofa",
+            "tv",
+            "shelf",
+            "furniture-item",
+          ],
+        ],
+      ],
       ["==", ["get", "trashcan"], "yes"],
       ["==", ["get", "copier"], "yes"],
       ["==", ["get", "amenity"], "vending_machine"],
@@ -257,7 +271,11 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["all", ["==", ["get", "highway"], "steps"], ["!", ["has", "conveying"]]],
+    filter: [
+      "all",
+      ["==", ["get", "highway"], "steps"],
+      ["!", ["has", "conveying"]],
+    ],
     id: "indoor-steps",
     layout: {
       "line-join": "round",
@@ -336,11 +354,11 @@ export const defaultLayers: Array<LayerSpecification> = [
       "text-field": [
         "format",
         ["get", "name"],
-        {"font-scale": 0.8},
+        { "font-scale": 0.8 },
         "\n",
         {},
         ["get", "ref"],
-        {"font-scale": 0.6}
+        { "font-scale": 0.6 },
       ],
       "text-font": ["Roboto Regular"],
       "text-ignore-placement": false,
@@ -389,11 +407,11 @@ export const defaultLayers: Array<LayerSpecification> = [
       "text-field": [
         "format",
         ["get", "name"],
-        {"font-scale": 0.8},
+        { "font-scale": 0.8 },
         "\n",
         {},
         ["get", "ref"],
-        {"font-scale": 0.6}
+        { "font-scale": 0.6 },
       ],
       "text-font": ["Roboto Regular"],
       "text-ignore-placement": false,

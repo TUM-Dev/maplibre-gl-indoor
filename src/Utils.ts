@@ -22,7 +22,8 @@ export function filterWithLevel(
   const levelBetween: ExpressionSpecification = [
     "all",
     ["in", ";", ["get", "level"]],
-    [ // level=LEVEL;... => if LEVEL <= current_level, we can display
+    [
+      // level=LEVEL;... => if LEVEL <= current_level, we can display
       "<=",
       [
         "to-number",
@@ -30,7 +31,8 @@ export function filterWithLevel(
       ],
       level,
     ],
-    [ // level=...;LEVEL => if LEVEL >= current_level, we can display
+    [
+      // level=...;LEVEL => if LEVEL >= current_level, we can display
       ">=",
       [
         "to-number",
