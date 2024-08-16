@@ -4,15 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cd .. && npm run build-lib && cd example && vite",
+    "dev": "cd ../../ && npm run build-lib && cd examples/geojson && vite",
     "lint": "vue-tsc -b",
-    "build": "cd .. && npm run build && cd example && vite build",
+    "build": "cd ../../ && npm run build-lib && cd examples/geojson && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "vue": "3.4.38",
     "maplibre-gl": "4.5.2",
-    "maplibre-gl-indoor": "workspace:../"
+    "maplibre-gl-indoor": "workspace:../../"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.1.2",
