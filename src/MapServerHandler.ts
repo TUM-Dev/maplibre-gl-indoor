@@ -16,8 +16,8 @@ type RemoteMap = {
   url: string;
 };
 
-const MIN_ZOOM_TO_DOWNLOAD = 17;
-const AREA_TO_DOWNLOAD = 1000; // in terms of distance from user
+const MIN_ZOOM_TO_DOWNLOAD = 16.5;
+const MIN_DISTANCE_TO_DOWNLOAD_METERS = 200;
 
 class MapServerHandler {
   downloadedBounds: BBox | null;
@@ -79,35 +79,35 @@ class MapServerHandler {
       }
     }
 
-    const distanceEastWest = turfDistance(
+    const distanceEastWestMeters = turfDistance(
       viewPort.getNorthEast().toArray(),
       viewPort.getNorthWest().toArray(),
+      {units:"meters"}
     );
-    const distanceNorthSouth = turfDistance(
+    const distanceNorthSouthMeters = turfDistance(
       viewPort.getNorthEast().toArray(),
       viewPort.getSouthEast().toArray(),
+      {units:"meters"}
     );
     // It is not necessary to compute others as we are at zoom >= 17, the approximation is enough.
-    const maxDistanceOnScreen = Math.max(distanceEastWest, distanceNorthSouth);
-    const bestSizeOfAreaToDownload = Math.max(
-      AREA_TO_DOWNLOAD,
-      maxDistanceOnScreen * 2,
+    const maxXYViewportDistanceMeters =
+      Math.max(distanceEastWestMeters, distanceNorthSouthMeters) / 2;
+    const verticalDistanceMeters = Math.max(
+      MIN_DISTANCE_TO_DOWNLOAD_METERS,
+      maxXYViewportDistanceMeters * 2,
     );
 
-    const center = this.map.getCenter();
-    const dist = bestSizeOfAreaToDownload * Math.sqrt(2);
-    const northEast = turfDestination(center.toArray(), dist, Math.PI / 4)
-      .geometry.coordinates;
-    const southWest = turfDestination(
-      center.toArray(),
-      dist,
-      (-3 * Math.PI) / 4,
-    ).geometry.coordinates;
+    const center = this.map.getCenter().toArray();
+    console.debug(
+      `requested indoor maps for a bbox ${verticalDistanceMeters}m vertically/horizontally around ${center}`,
+    );
+    // isosceles right triangle => diagonal is x * sqrt(2)
+    const distDiagonalMeters = verticalDistanceMeters * Math.sqrt(2);
+    const northEast = turfDestination(center, distDiagonalMeters, 50, {units:"meters"});
+    const southWest = turfDestination(center, distDiagonalMeters, 50 - 180, {units:"meters"});
     const boundsToDownload = [
-      southWest[1],
-      southWest[0],
-      northEast[1],
-      northEast[0],
+      ...southWest.geometry.coordinates.reverse(),
+      ...northEast.geometry.coordinates.reverse(),
     ] as BBox;
 
     // TODO: I put this here because fetch is async and takes more time than the next call to loadMapsIfNecessary.
