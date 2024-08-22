@@ -9,7 +9,7 @@
     "dist/*",
     "src/"
   ],
-  "version": "0.0.11",
+  "version": "0.0.12",
   "scripts": {
     "lint": "eslint src --fix && tsc --noEmit && prettier --write .",
     "build": "rm -fr dist && npm run build-lib && npm run build-dts",
@@ -51,6 +51,6 @@
     "@turf/bbox": "7.1.0",
     "@turf/destination": "7.1.0",
     "@turf/distance": "7.1.0",
-    "maplibre-gl": "4.5.2"
+    "maplibre-gl": "4"
   }
 }
