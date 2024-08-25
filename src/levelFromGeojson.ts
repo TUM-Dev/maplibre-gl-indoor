@@ -77,7 +77,7 @@ export function extractLevelsRangeAndBounds(
   }
   const levelRanges: LevelsRange[] = geojson.features
     .filter(
-      (feat) => !feat.properties || typeof feat.properties.level !== "string",
+      (feat) => !!feat.properties && typeof feat.properties.level === "string",
     )
     .map((feat) => extractLevelRangeFromFeature(feat.properties?.level ?? ""))
     .filter((r) => r !== null);
@@ -85,7 +85,8 @@ export function extractLevelsRangeAndBounds(
   if (levelRanges.length == 0) {
     console.debug(geojson);
     throw new Error(
-      `the FeatureCollection does not contain a single level. cannot compute the range of levels to display`,
+      "the FeatureCollection does not contain a single level. " +
+        "Cannot compute the range of levels to display",
     );
   }
   return {
