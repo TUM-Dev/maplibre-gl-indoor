@@ -3,7 +3,7 @@ import type { LayerSpecification } from "maplibre-gl";
 
 import type { IndoorMapOptions, LevelsRange } from "./Types";
 
-import { extractLevelsRangeAndBounds } from "./GeojsonHelper";
+import { extractLevelsRangeAndBounds } from "./levelFromGeojson";
 import Style from "./style";
 
 class IndoorMap {

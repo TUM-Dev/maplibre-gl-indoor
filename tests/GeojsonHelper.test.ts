@@ -1,7 +1,7 @@
 import {
   extractLevelRangeFromFeature,
   parseLevelRange,
-} from "../src/GeojsonHelper";
+} from "../src/levelFromGeojson";
 
 describe("extractLevelRangeFromFeature", () => {
   test("gibberish", () => {
