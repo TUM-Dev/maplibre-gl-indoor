@@ -82,12 +82,12 @@ class MapServerHandler {
     const distanceEastWestMeters = turfDistance(
       viewPort.getNorthEast().toArray(),
       viewPort.getNorthWest().toArray(),
-      {units:"meters"}
+      { units: "meters" },
     );
     const distanceNorthSouthMeters = turfDistance(
       viewPort.getNorthEast().toArray(),
       viewPort.getSouthEast().toArray(),
-      {units:"meters"}
+      { units: "meters" },
     );
     // It is not necessary to compute others as we are at zoom >= 17, the approximation is enough.
     const maxXYViewportDistanceMeters =
@@ -103,8 +103,12 @@ class MapServerHandler {
     );
     // isosceles right triangle => diagonal is x * sqrt(2)
     const distDiagonalMeters = verticalDistanceMeters * Math.sqrt(2);
-    const northEast = turfDestination(center, distDiagonalMeters, 50, {units:"meters"});
-    const southWest = turfDestination(center, distDiagonalMeters, 50 - 180, {units:"meters"});
+    const northEast = turfDestination(center, distDiagonalMeters, 50, {
+      units: "meters",
+    });
+    const southWest = turfDestination(center, distDiagonalMeters, 50 - 180, {
+      units: "meters",
+    });
     const boundsToDownload = [
       ...southWest.geometry.coordinates.reverse(),
       ...northEast.geometry.coordinates.reverse(),

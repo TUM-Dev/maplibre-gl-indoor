@@ -3,7 +3,7 @@ import type { LayerSpecification } from "maplibre-gl";
 
 import type { IndoorMapOptions, LevelsRange } from "./Types";
 
-import GeoJsonHelper from "./GeojsonHelper";
+import { extractLevelsRangeAndBounds } from "./GeojsonHelper";
 import Style from "./style";
 
 class IndoorMap {
@@ -40,8 +40,7 @@ class IndoorMap {
     geojson: FeatureCollection<Geometry>,
     options: IndoorMapOptions = {},
   ) {
-    const { bounds, levelsRange } =
-      GeoJsonHelper.extractLevelsRangeAndBounds(geojson);
+    const { bounds, levelsRange } = extractLevelsRangeAndBounds(geojson);
 
     return new IndoorMap(
       bounds,

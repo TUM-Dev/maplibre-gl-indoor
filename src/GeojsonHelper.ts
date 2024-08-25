@@ -1,86 +1,98 @@
-import type { BBox, Feature, FeatureCollection, Geometry } from "geojson";
+import type { BBox, FeatureCollection, Geometry } from "geojson";
 
 import bbox from "@turf/bbox";
 
 import type { LevelsRange } from "./Types";
 
 /**
- * Helper for Geojson data
+ * Extract level from feature
+ *
+ * @returns {LevelsRange | null} the level or the range of level.
+ * @param range e.g. "-1--2","1-2","1-2"
  */
-class GeoJsonHelper {
-  /**
-   * Extract level from feature
-   *
-   * @param {Feature} feature geojson feature
-   * @returns {LevelsRange | number | null} the level or the range of level.
-   */
-  static extractLevelFromFeature(
-    feature: Feature,
-  ): LevelsRange | null | number {
-    if (!!feature.properties && feature.properties.level !== null) {
-      const propertyLevel = feature.properties["level"];
-      if (typeof propertyLevel === "string") {
-        const splitLevel = propertyLevel.split(";");
-        if (splitLevel.length === 1) {
-          const level = parseFloat(propertyLevel);
-          if (!isNaN(level)) {
-            return level;
-          }
-        } else if (splitLevel.length === 2) {
-          const level1 = parseFloat(splitLevel[0]);
-          const level2 = parseFloat(splitLevel[1]);
-          if (!isNaN(level1) && !isNaN(level2)) {
-            return {
-              max: Math.max(level1, level2),
-              min: Math.min(level1, level2),
-            };
-          }
-        }
-      }
-    }
-    return null;
+export function parseLevelRange(range: string): LevelsRange | null {
+  range = range.replaceAll(" ", "");
+  const firstIsNegative = range.startsWith("-");
+  let firstEnd = firstIsNegative
+    ? range.substring(1).indexOf("-")
+    : range.indexOf("-");
+  if (firstEnd === -1) {
+    // e.g "1"
+    const rangeFloat = parseFloat(range);
+    if (isNaN(rangeFloat)) return null;
+    return { max: rangeFloat, min: rangeFloat };
   }
-
-  /**
-   * Extract levels range and bounds from geojson
-   *
-   * @param {FeatureCollection<Geometry>} geojson the geojson
-   * @returns {Object} the levels range and bounds.
-   */
-  static extractLevelsRangeAndBounds(geojson: FeatureCollection<Geometry>): {
-    bounds: BBox;
-    levelsRange: LevelsRange;
-  } {
-    let minLevel = Infinity;
-    let maxLevel = -Infinity;
-
-    const bounds = bbox(geojson);
-
-    const parseFeature = (feature: Feature): void => {
-      const level = this.extractLevelFromFeature(feature);
-      if (level === null) {
-        return;
-      }
-      if (typeof level === "number") {
-        minLevel = Math.min(minLevel, level);
-        maxLevel = Math.max(maxLevel, level);
-      } else if (typeof level === "object") {
-        minLevel = Math.min(minLevel, level.min);
-        maxLevel = Math.max(maxLevel, level.max);
-      }
-    };
-
-    if (geojson.type === "FeatureCollection") {
-      geojson.features.forEach(parseFeature);
-    }
-
-    if (minLevel === Infinity || maxLevel === -Infinity) {
-      throw new Error("No level found");
-    }
-    return {
-      bounds,
-      levelsRange: { max: maxLevel, min: minLevel },
-    };
+  if (firstIsNegative) {
+    firstEnd += 1; // if we add this before, we could not differentiate "-100" from "100-"
   }
+  const secondStart = firstEnd + 1;
+  const firstFloat = parseFloat(range.substring(0, firstEnd));
+  const secondFloat = parseFloat(range.substring(secondStart));
+  if (isNaN(firstFloat) || isNaN(secondFloat)) return null;
+  return {
+    max: Math.max(firstFloat, secondFloat),
+    min: Math.min(firstFloat, secondFloat),
+  };
 }
-export default GeoJsonHelper;
+
+/**
+ * Extract level from feature
+ *
+ * @returns {LevelsRange | null} the level or the range of level.
+ * @param level
+ */
+export function extractLevelRangeFromFeature(
+  level: string,
+): LevelsRange | null {
+  const splitLevel: LevelsRange[] = level
+    .split(";")
+    .map(parseLevelRange)
+    .filter((r) => r !== null);
+
+  if (!splitLevel.length) return null;
+
+  return {
+    max: Math.max(...splitLevel.map((l) => l.max)),
+    min: Math.min(...splitLevel.map((l) => l.min)),
+  };
+}
+
+/**
+ * Extract levels range and bounds from geojson
+ *
+ * @param {FeatureCollection<Geometry>} geojson the geojson
+ * @returns {Object} the levels range and bounds.
+ */
+export function extractLevelsRangeAndBounds(
+  geojson: FeatureCollection<Geometry>,
+): {
+  bounds: BBox;
+  levelsRange: LevelsRange;
+} {
+  if (geojson.type !== "FeatureCollection") {
+    throw new Error(
+      geojson.type +
+        " is not allowed as a top level collection, please use FeatureCollection instead.",
+    );
+  }
+  const levelRanges: LevelsRange[] = geojson.features
+    .filter(
+      (feat) => !feat.properties || typeof feat.properties.level !== "string",
+    )
+    .map((feat) => extractLevelRangeFromFeature(feat.properties?.level ?? ""))
+    .filter((r) => r !== null);
+
+  if (levelRanges.length == 0) {
+    console.debug(geojson);
+    throw new Error(
+      `the FeatureCollection does not contain a single level. cannot compute the range of levels to display`,
+    );
+  }
+  return {
+    bounds: bbox(geojson),
+    levelsRange: {
+      max: Math.max(...levelRanges.map((l) => l.max)),
+      min: Math.min(...levelRanges.map((l) => l.min)),
+    },
+  };
+}
