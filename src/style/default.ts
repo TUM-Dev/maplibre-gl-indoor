@@ -171,11 +171,11 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: ["==", ["get", "indoor"], "wall"],
     id: "indoor-walls",
     paint: {
-      "line-color": "#000000",
-      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-color": "#000000",
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
     source: "indoor",
-    type: "line",
+    type: "fill",
   },
   {
     filter: ["has", "barrier"],

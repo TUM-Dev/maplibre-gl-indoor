@@ -14,11 +14,7 @@ export function overlap(bounds1: BBox, bounds2: BBox) {
   return !rectangleIsAboveOther;
 }
 
-export function filterWithLevel(
-  initialFilter: ExpressionSpecification,
-  level: Level,
-  showFeaturesWithEmptyLevel: boolean = false,
-): ExpressionSpecification {
+export function levelFilters(level: Level): ExpressionSpecification[] {
   const levelBetween: ExpressionSpecification = [
     "all",
     ["in", ";", ["get", "level"]],
@@ -45,18 +41,22 @@ export function filterWithLevel(
       level,
     ],
   ];
-  const levelFilters: ExpressionSpecification[] = [
-    levelBetween,
-    ["==", ["get", "level"], level.toString()],
-  ];
+  return [levelBetween, ["==", ["get", "level"], level.toString()]];
+}
+
+export function filterWithLevel(
+  initialFilter: ExpressionSpecification,
+  level: Level,
+  showFeaturesWithEmptyLevel: boolean = false,
+): ExpressionSpecification {
   if (showFeaturesWithEmptyLevel) {
     return [
       "all",
       initialFilter,
-      ["any", ["!", ["has", "level"]], ...levelFilters],
+      ["any", ["!", ["has", "level"]], ...levelFilters(level)],
     ];
   } else {
-    return ["all", initialFilter, ["any", ...levelFilters]];
+    return ["all", initialFilter, ["any", ...levelFilters(level)]];
   }
 }
 
