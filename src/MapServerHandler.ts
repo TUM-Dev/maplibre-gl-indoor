@@ -8,7 +8,7 @@ import type { IndoorMapOptions, MapGLWithIndoor } from "./Types";
 
 import addIndoorTo from "./addIndoorTo";
 import IndoorMap from "./IndoorMap";
-import { bboxContains } from "./Utils";
+import { bboxContains } from "./bbox";
 
 type RemoteMap = {
   indoorMap?: IndoorMap;

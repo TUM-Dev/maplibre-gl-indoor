@@ -10,7 +10,8 @@ import { default as turfDistance } from "@turf/distance";
 import type { Level } from "./Types";
 
 import IndoorMap from "./IndoorMap";
-import { bboxCenter, filterWithLevel, overlap } from "./Utils";
+import { filterWithLevel } from "./levelFilter";
+import { bboxCenter, overlap } from "./bbox";
 
 type SavedFilter = {
   filter: ExpressionSpecification;
@@ -23,7 +24,7 @@ const SOURCE_ID = "indoor";
  * Manage indoor levels
  * @param {Map} map the Maplibre map
  */
-class IndoorLayer {
+export default class IndoorLayer {
   _indoorMaps: Array<IndoorMap>;
   _level: Level | null;
 
@@ -264,5 +265,3 @@ class IndoorLayer {
     }
   }
 }
-
-export default IndoorLayer;

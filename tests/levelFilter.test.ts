@@ -3,7 +3,7 @@ import {
   StyleExpression,
 } from "@maplibre/maplibre-gl-style-spec";
 import { createExpression } from "@maplibre/maplibre-gl-style-spec";
-import { levelFilters } from "../src/Utils";
+import { levelFilters } from "../src/levelFilter";
 import type { Level } from "../src";
 
 function testFilterExpression(
