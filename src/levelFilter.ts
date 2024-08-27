@@ -2,34 +2,32 @@ import type { ExpressionSpecification } from "maplibre-gl";
 
 import type { Level } from "./Types";
 
-export function levelFilters(level: Level): ExpressionSpecification[] {
-  const levelBetween: ExpressionSpecification = [
+export function levelFilters(level: Level): ExpressionSpecification {
+  return [
     "all",
-    ["in", ";", ["get", "level"]],
     [
-      // level=LEVEL;... => if LEVEL <= current_level, we can display
+      // level=MIN~... => if LEVEL <= current_level, we can display
       "<=",
       [
         "to-number",
-        ["slice", ["get", "level"], 0, ["index-of", ";", ["get", "level"]]],
+        ["slice", ["get", "level"], 0, ["index-of", "~", ["get", "level"]]],
       ],
       level,
     ],
     [
-      // level=...;LEVEL => if LEVEL >= current_level, we can display
+      // level=...~MAX => if LEVEL >= current_level, we can display
       ">=",
       [
         "to-number",
         [
           "slice",
           ["get", "level"],
-          ["+", ["index-of", ";", ["get", "level"]], 1],
+          ["+", ["index-of", "~", ["get", "level"]], 1],
         ],
       ],
       level,
     ],
   ];
-  return [levelBetween, ["==", ["get", "level"], level.toString()]];
 }
 
 export function filterWithLevel(
@@ -41,9 +39,9 @@ export function filterWithLevel(
     return [
       "all",
       initialFilter,
-      ["any", ["!", ["has", "level"]], ...levelFilters(level)],
+      ["any", ["!", ["has", "level"]], levelFilters(level)],
     ];
   } else {
-    return ["all", initialFilter, ["any", ...levelFilters(level)]];
+    return ["all", initialFilter, levelFilters(level)];
   }
 }

@@ -9,9 +9,9 @@ import { default as turfDistance } from "@turf/distance";
 
 import type { Level } from "./Types";
 
+import { bboxCenter, overlap } from "./bbox";
 import IndoorMap from "./IndoorMap";
 import { filterWithLevel } from "./levelFilter";
-import { bboxCenter, overlap } from "./bbox";
 
 type SavedFilter = {
   filter: ExpressionSpecification;
@@ -144,6 +144,7 @@ export default class IndoorLayer {
     this._savedFilters.forEach(({ filter, layerId }) => {
       this._map.setFilter(layerId, filterFn(filter));
     });
+    console.log(structuredClone(this._map.getStyle()));
   }
 
   _updateSelectedMap(indoorMap: IndoorMap | null) {

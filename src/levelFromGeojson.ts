@@ -8,31 +8,18 @@ import type { LevelsRange } from "./Types";
  * Extract level from feature
  *
  * @returns {LevelsRange | null} the level or the range of level.
- * @param range e.g. "-1--2","1-2","1-2"
+ * @param range e.g. "-1~-2"
  */
 export function parseLevelRange(range: string): LevelsRange | null {
-  range = range.replaceAll(" ", "");
-  const firstIsNegative = range.startsWith("-");
-  let firstEnd = firstIsNegative
-    ? range.substring(1).indexOf("-")
-    : range.indexOf("-");
-  if (firstEnd === -1) {
-    // e.g "1"
-    const rangeFloat = parseFloat(range);
-    if (isNaN(rangeFloat)) return null;
-    return { max: rangeFloat, min: rangeFloat };
-  }
-  if (firstIsNegative) {
-    firstEnd += 1; // if we add this before, we could not differentiate "-100" from "100-"
-  }
-  const secondStart = firstEnd + 1;
-  const firstFloat = parseFloat(range.substring(0, firstEnd));
-  const secondFloat = parseFloat(range.substring(secondStart));
-  if (isNaN(firstFloat) || isNaN(secondFloat)) return null;
-  return {
-    max: Math.max(firstFloat, secondFloat),
-    min: Math.min(firstFloat, secondFloat),
+  const splitRange = range.split("~");
+  const parsedRange = {
+    max: parseFloat(splitRange[1]),
+    min: parseFloat(splitRange[0]),
   };
+  if (isNaN(parsedRange.min) || isNaN(parsedRange.max)) {
+    return null;
+  }
+  return parsedRange;
 }
 
 /**

@@ -21,7 +21,7 @@ describe("extractLevelRangeFromFeature", () => {
           id: 1290116452,
           properties: {
             indoor: "wall",
-            level: "0",
+            level: "0~1",
           },
           type: "Feature",
         },
@@ -34,7 +34,7 @@ describe("extractLevelRangeFromFeature", () => {
           properties: {
             door: "yes",
             indoor: "yes",
-            level: "2",
+            level: "2~2",
           },
           type: "Feature",
         },
@@ -55,57 +55,19 @@ describe("extractLevelRangeFromFeature", () => {
   test("gibberish", () => {
     expect(extractLevelRangeFromFeature("abc")).toStrictEqual(null);
   });
-  test("single", () => {
-    for (let i = -100; i < 100; i++) {
-      expect(extractLevelRangeFromFeature(i.toString())).toStrictEqual({
-        max: i,
-        min: i,
-      });
-    }
-  });
   test("single range", () => {
     for (let i = -100; i < 100; i++) {
-      expect(extractLevelRangeFromFeature(i.toString())).toStrictEqual({
-        max: i,
-        min: i,
-      });
-      expect(extractLevelRangeFromFeature(`${i};${i + 1}`)).toStrictEqual({
-        max: i + 1,
-        min: i,
-      });
+      const expected = { max: i, min: i };
+      expect(extractLevelRangeFromFeature(`${i}~${i}`)).toStrictEqual(expected);
     }
   });
-  test("double-single range", () => {
-    for (let from1 = -4; from1 < 4; from1++) {
-      for (let to1 = -4; to1 < 4; to1++) {
-        for (let i = -4; i < 4; i++) {
-          const expected = {
-            max: Math.max(from1, to1, i),
-            min: Math.min(from1, to1, i),
-          };
-          expect(
-            extractLevelRangeFromFeature(`${i};${from1}-${to1}`),
-          ).toStrictEqual(expected);
-          expect(
-            extractLevelRangeFromFeature(`${from1}-${to1};${i}`),
-          ).toStrictEqual(expected);
-        }
-      }
-    }
-  });
-  test("double range", () => {
-    for (let from1 = -3; from1 < 3; from1++) {
-      for (let to1 = -3; to1 < 3; to1++) {
-        for (let from2 = -2; from2 < 2; from2++) {
-          for (let to2 = -2; to2 < 2; to2++) {
-            expect(
-              extractLevelRangeFromFeature(`${from1}-${to1};${from2}-${to2}`),
-            ).toStrictEqual({
-              max: Math.max(from1, to1, from2, to2),
-              min: Math.min(from1, to1, from2, to2),
-            });
-          }
-        }
+  test("range", () => {
+    for (let from = -100; from < 100; from++) {
+      for (let to = from; to < 100; to++) {
+        const expected = { max: to, min: from };
+        expect(extractLevelRangeFromFeature(`${from}~${to}`)).toStrictEqual(
+          expected,
+        );
       }
     }
   });
@@ -118,21 +80,21 @@ describe("parseLevelRange", () => {
   test("plain numbers", () => {
     for (let i = -100; i < 100; i++) {
       const expected = { max: i, min: i };
-      expect(parseLevelRange(i.toString())).toStrictEqual(expected);
-      expect(parseLevelRange(" " + i.toString())).toStrictEqual(expected);
-      expect(parseLevelRange(i.toString() + "")).toStrictEqual(expected);
+      expect(parseLevelRange(`${i}~${i}`)).toStrictEqual(expected);
     }
   });
   test("ranges", () => {
     for (let from = -10; from < 10; from++) {
-      for (let to = -10; to < 10; to++) {
-        const expected = { max: Math.max(from, to), min: Math.min(from, to) };
-        expect(parseLevelRange(`${from}-${to}`)).toStrictEqual(expected);
-        expect(parseLevelRange(` ${from} - ${to} `)).toStrictEqual(expected);
-        expect(parseLevelRange(`${from + 0.5}-${to + 0.5}`)).toStrictEqual({
-          min: expected.min + 0.5,
-          max: expected.max + 0.5,
-        });
+      for (let to = from; to < 10; to++) {
+        const expected = { max: to, min: from };
+        expect(
+          parseLevelRange(`${expected.min}~${expected.max}`),
+        ).toStrictEqual(expected);
+        expected.min += 0.5;
+        expected.max += 0.5;
+        expect(
+          parseLevelRange(`${expected.min}~${expected.max}`),
+        ).toStrictEqual(expected);
       }
     }
   });

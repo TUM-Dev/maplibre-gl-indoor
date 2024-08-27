@@ -7,8 +7,8 @@ import { default as turfDistance } from "@turf/distance";
 import type { IndoorMapOptions, MapGLWithIndoor } from "./Types";
 
 import addIndoorTo from "./addIndoorTo";
-import IndoorMap from "./IndoorMap";
 import { bboxContains } from "./bbox";
+import IndoorMap from "./IndoorMap";
 
 type RemoteMap = {
   indoorMap?: IndoorMap;
