@@ -7,20 +7,22 @@ export const defaultLayers: Array<LayerSpecification> = [
     paint: {
       "fill-color": "#FFFFFF",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
+      "fill-pattern": "aquarium_11",
     },
     source: "indoor",
     type: "fill",
   },
-  {
-    filter: ["==", ["get", "indoor"], "level"],
-    id: "level-background",
-    paint: {
-      "fill-color": "#FBF9FA",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
-    },
-    source: "indoor",
-    type: "fill",
-  },
+  //   unsure if the level is not better displayed :shrug: ..
+  //   {
+  //    filter: ["==", ["get", "indoor"], "level"],
+  //    id: "indoor-level",
+  //    paint: {
+  //      "fill-color": "#b9e1ff",
+  //      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+  //    },
+  //    source: "indoor",
+  //    type: "fill",
+  //  },
   {
     filter: ["==", ["get", "leisure"], "garden"],
     id: "indoor-gardens",
@@ -57,13 +59,35 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["==", ["get", "indoor"], "corridor"],
-    id: "indoor-corridors",
+    filter: [
+      "any",
+      ["==", ["get", "indoor"], "room"],
+      ["==", ["get", "indoor"], "area"],
+      ["==", ["get", "railway"], "platform"],
+    ],
+    id: "indoor-rooms",
     paint: {
-      "fill-antialias": true, // otherwise the outline is invisible sometimes..,
-      "fill-color": "#8dd1fc",
+      "fill-color": "#e0e0e0",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
-      "fill-outline-color": "#000",
+    },
+    source: "indoor",
+    type: "fill",
+  },
+  {
+    filter: [
+      "all",
+      [
+        "any",
+        ["==", ["get", "indoor"], "room"],
+        ["==", ["get", "indoor"], "area"],
+        ["==", ["get", "railway"], "platform"],
+      ],
+      ["==", ["get", "access"], "no"],
+    ],
+    id: "indoor-rooms-no-access",
+    paint: {
+      "fill-color": "#878787",
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
     source: "indoor",
     type: "fill",
@@ -75,15 +99,14 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["==", ["get", "indoor"], "area"],
       ["==", ["get", "railway"], "platform"],
     ],
-    id: "indoor-rooms",
+    id: "indoor-rooms-walls",
     paint: {
-      "fill-antialias": true, // otherwise the outline is invisible sometimes..
-      "fill-color": "#e0e0e0",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
-      "fill-outline-color": "#000",
+      "line-color": "#000",
+      "line-offset": 1,
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
     },
     source: "indoor",
-    type: "fill",
+    type: "line",
   },
   {
     filter: ["==", ["get", "indoor"], "room"],
@@ -101,6 +124,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "all",
       ["any", ["==", ["get", "indoor"], "door"], ["has", "door"]],
       ["!", ["has", "entrance"]],
+      ["!=", ["get", "access"], "no"],
     ],
     id: "indoor-doors",
     paint: {
@@ -119,17 +143,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "circle",
   },
   {
-    filter: ["==", ["get", "indoor"], "area"],
-    id: "indoor-areas",
-    paint: {
-      "fill-color": "#b9e1ff",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
-    },
-    source: "indoor",
-    type: "fill",
-  },
-  {
-    filter: ["all", ["==", ["get", "highway"], "pedestrian"], ["has", "level"]],
+    filter: ["==", ["get", "highway"], "pedestrian"],
     id: "indoor-highways-area",
     paint: {
       "fill-color": [
@@ -148,13 +162,39 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "fill",
   },
   {
-    filter: ["all", ["==", ["get", "highway"], "pedestrian"], ["has", "level"]],
+    filter: ["==", ["get", "highway"], "pedestrian"],
     id: "indoor-highways-area-pattern",
     paint: {
       "fill-color": "hsl(0, 0%, 100%)",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
       "fill-outline-color": "hsl(35, 10%, 83%)",
       "fill-pattern": "pedestrian-polygon",
+    },
+    source: "indoor",
+    type: "fill",
+  },
+  {
+    filter: [
+      "any",
+      ["==", ["get", "indoor"], "corridor"],
+      ["==", ["get", "room"], "stairs"],
+    ],
+    id: "indoor-corridors",
+    paint: {
+      "fill-color": "#b9e1ff",
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+    },
+    source: "indoor",
+    type: "fill",
+  },
+  {
+    filter: ["==", ["get", "indoor"], "area"],
+    id: "indoor-area",
+    paint: {
+      "fill-antialias": true, // otherwise the outline is invisible sometimes..,
+      "fill-color": "#8dd1fc",
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-outline-color": "#000",
     },
     source: "indoor",
     type: "fill",
@@ -194,6 +234,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "all",
       ["==", ["get", "door"], "sliding"],
       ["==", ["get", "automatic_door"], "button"],
+      ["!=", ["get", "access"], "no"],
     ],
     id: "indoor-elevator-doors",
     metadata: {
@@ -245,11 +286,12 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: ["==", ["get", "indoor"], "wall"],
     id: "indoor-walls",
     paint: {
-      "fill-color": "#000000",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "line-color": "#000000",
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "line-width": 2,
     },
     source: "indoor",
-    type: "fill",
+    type: "line",
   },
   {
     filter: ["has", "barrier"],
@@ -504,20 +546,6 @@ export const defaultLayers: Array<LayerSpecification> = [
         19,
         1,
       ],
-      "text-color": "#072140",
-      "text-halo-color": "rgb(194, 215, 239, 0.3)",
-      "text-halo-width": 1,
-      "text-opacity": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        17,
-        0,
-        17.5,
-        0.5,
-        19,
-        1,
-      ],
     },
     source: "indoor",
     type: "symbol",
@@ -681,8 +709,6 @@ export const defaultLayers: Array<LayerSpecification> = [
     id: "poi-exterior-exit",
     layout: {
       "icon-image": "entrance_11",
-      "text-field": "ex",
-      "text-font": [],
     },
     source: "indoor",
     type: "symbol",
@@ -701,5 +727,16 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
     source: "indoor",
     type: "symbol",
+  },
+  {
+    filter: ["has", "building"],
+    id: "buildings-walls",
+    paint: {
+      "line-color": "#FFFFFF",
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
+      "line-width": 2,
+    },
+    source: "indoor",
+    type: "line",
   },
 ];

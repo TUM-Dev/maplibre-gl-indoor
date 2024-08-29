@@ -144,7 +144,8 @@ export default class IndoorLayer {
     this._savedFilters.forEach(({ filter, layerId }) => {
       this._map.setFilter(layerId, filterFn(filter));
     });
-    console.log(structuredClone(this._map.getStyle()));
+    // one can use the following to see the generated style
+    // console.log(structuredClone(this._map.getStyle()));
   }
 
   _updateSelectedMap(indoorMap: IndoorMap | null) {
