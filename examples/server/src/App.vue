@@ -15,7 +15,7 @@ const indoorMap = ref<MapServerHandler | null>(null);
 
 async function createMap() {
   const baseMap = new Map({
-    style: "https://nav.tum.de/maps/styles/osm-liberty/style.json",
+    style: "https://nav.tum.de/maps/styles/navigatum-basemap/style.json",
     center: [11.670099, 48.266921],
     zoom: 17.5,
     container: "map",
