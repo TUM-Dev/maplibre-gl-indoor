@@ -28,7 +28,7 @@ async function createMap() {
     antialias: true,
   });
   const map = addIndoorTo(baseMap);
-  const geojson = await (await fetch("/gare-de-l-est.geojson")).json();
+  const geojson = await (await fetch("/data.geojson")).json();
   let indoorJSONMap = IndoorMap.fromGeojson(geojson);
   await map.indoor.addMap(indoorJSONMap);
 
