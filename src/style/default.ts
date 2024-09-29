@@ -4,10 +4,10 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: ["any", ["has", "building"], ["has", "building:part"]],
     id: "buildings-background",
+    minzoom: 16.5,
     paint: {
       "fill-color": "#FFFFFF",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
-      "fill-pattern": "aquarium_11",
     },
     source: "indoor",
     type: "fill",
@@ -16,9 +16,10 @@ export const defaultLayers: Array<LayerSpecification> = [
   //   {
   //    filter: ["==", ["get", "indoor"], "level"],
   //    id: "indoor-level",
+  //    minzoom: 16.5,
   //    paint: {
   //      "fill-color": "#b9e1ff",
-  //      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+  //      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
   //    },
   //    source: "indoor",
   //    type: "fill",
@@ -26,12 +27,10 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: ["==", ["get", "leisure"], "garden"],
     id: "indoor-gardens",
-    layout: {
-      visibility: "visible",
-    },
+    minzoom: 16.5,
     paint: {
       "fill-color": "#D8E5A4",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
     type: "fill",
@@ -39,9 +38,10 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: ["==", ["get", "amenity"], "parking"],
     id: "indoor-parkings",
+    minzoom: 16.5,
     paint: {
       "fill-color": "#fbeada",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
       "fill-outline-color": "#000000",
     },
     source: "indoor",
@@ -50,8 +50,9 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: ["==", ["get", "amenity"], "parking"],
     id: "indoor-parkings-patterns",
+    minzoom: 16.5,
     paint: {
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 0.1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 0.1],
       "fill-pattern": "si-main-3",
       "fill-translate-anchor": "viewport",
     },
@@ -66,9 +67,10 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["==", ["get", "railway"], "platform"],
     ],
     id: "indoor-rooms",
+    minzoom: 16.5,
     paint: {
       "fill-color": "#e0e0e0",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
     type: "fill",
@@ -85,9 +87,10 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["==", ["get", "access"], "no"],
     ],
     id: "indoor-rooms-no-access",
+    minzoom: 16.5,
     paint: {
       "fill-color": "#878787",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
     type: "fill",
@@ -100,10 +103,11 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["==", ["get", "railway"], "platform"],
     ],
     id: "indoor-rooms-walls",
+    minzoom: 16.5,
     paint: {
       "line-color": "#000",
       "line-offset": 1,
-      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
     type: "line",
@@ -111,10 +115,10 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: ["==", ["get", "indoor"], "room"],
     id: "indoor-rooms-borders",
+    minzoom: 16.5,
     paint: {
       "line-color": "#000",
-      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
-      "line-width": 1,
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
     type: "line",
@@ -127,8 +131,10 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["!=", ["get", "access"], "no"],
     ],
     id: "indoor-doors",
+    minzoom: 16.5,
     paint: {
       "circle-color": "#e0e0e0",
+      "circle-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
       "circle-radius": [
         "interpolate",
         ["exponential", 2],
@@ -164,9 +170,10 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: ["==", ["get", "highway"], "pedestrian"],
     id: "indoor-highways-area-pattern",
+    minzoom: 16.5,
     paint: {
       "fill-color": "hsl(0, 0%, 100%)",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
       "fill-outline-color": "hsl(35, 10%, 83%)",
       "fill-pattern": "pedestrian-polygon",
     },
@@ -180,9 +187,10 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["==", ["get", "room"], "stairs"],
     ],
     id: "indoor-corridors",
+    minzoom: 16.5,
     paint: {
       "fill-color": "#b9e1ff",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
     type: "fill",
@@ -190,10 +198,11 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: ["==", ["get", "indoor"], "area"],
     id: "indoor-area",
+    minzoom: 16.5,
     paint: {
       "fill-antialias": true, // otherwise the outline is invisible sometimes..,
       "fill-color": "#8dd1fc",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
       "fill-outline-color": "#000",
     },
     source: "indoor",
@@ -206,9 +215,10 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["==", ["get", "balcony"], "yes"],
     ],
     id: "indoor-balcony",
+    minzoom: 16.5,
     paint: {
       "fill-color": "#BDBDBD",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
     type: "fill",
@@ -220,15 +230,15 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["==", ["get", "highway"], "elevator"],
     ],
     id: "indoor-elevators-below",
+    minzoom: 16.5,
     paint: {
       "fill-color": "#b9e1ff",
-      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 18, 1],
+      "fill-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
       "fill-outline-color": "#000000",
     },
     source: "indoor",
     type: "fill",
   },
-
   {
     filter: [
       "all",
@@ -257,18 +267,16 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "circle",
   },
   {
-    filter: [
-      "all",
+    filter:
       [
         "any",
         ["==", ["get", "elevator"], "yes"],
         ["==", ["get", "highway"], "elevator"],
       ],
-    ],
     id: "indoor-elevators-logo",
     layout: {
       "icon-allow-overlap": true,
-      "icon-image": "wheelchair_11",
+      "icon-image": "elevator",
       "icon-size": [
         "interpolate",
         ["exponential", 1.8],
@@ -382,6 +390,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       ["==", ["get", "amenity"], "vending_machine"],
     ],
     id: "indoor-furniture",
+    minzoom: 18,
     paint: {
       "fill-color": "#000",
       "fill-opacity": ["interpolate", ["linear"], ["zoom"], 18, 0, 19, 0.2],
@@ -393,12 +402,14 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "all",
-      ["all", ["==", ["get", "highway"], "steps"], ["!", ["has", "conveying"]]],
+      ["==", ["get", "highway"], "steps"],
+      ["!", ["has", "conveying"]],
     ],
-    id: "indoor-steps-copy-copy",
+    id: "indoor-steps-white-base",
     layout: {
       "line-join": "round",
     },
+    minzoom: 17,
     paint: {
       "line-color": "rgba(255, 252, 252, 0.8)",
       "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.25, 1],
@@ -418,12 +429,14 @@ export const defaultLayers: Array<LayerSpecification> = [
   {
     filter: [
       "all",
-      ["all", ["==", ["get", "highway"], "steps"], ["!", ["has", "conveying"]]],
+      ["==", ["get", "highway"], "steps"],
+      ["!", ["has", "conveying"]],
     ],
     id: "indoor-steps-base",
     layout: {
       "line-join": "round",
     },
+    minzoom: 17,
     paint: {
       "line-color": "rgba(0, 0, 0, 1)",
       "line-gap-width": [
@@ -458,6 +471,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     layout: {
       "line-join": "round",
     },
+    minzoom: 17,
     paint: {
       "line-color": "rgba(0, 0, 0, 1)",
       "line-dasharray": [
@@ -495,6 +509,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       "line-cap": "round",
       "line-join": "round",
     },
+    minzoom: 17,
     paint: {
       "line-color": "rgba(22, 93, 177, 0.4)",
       "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.25, 1],
@@ -589,7 +604,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     filter: ["==", ["get", "indoor"], "room"],
     id: "poi-indoor-text-ref",
     layout: {
-      "symbol-placement": "point",
+      "icon-text-fit": "both",
       "text-allow-overlap": false,
       "text-anchor": "center",
       "text-field": [
@@ -603,16 +618,21 @@ export const defaultLayers: Array<LayerSpecification> = [
       ],
       "text-font": ["Roboto Regular"],
       "text-ignore-placement": false,
-      "text-letter-spacing": 0.02,
-      "text-line-height": 1.2,
-      "text-max-angle": 38,
-      "text-max-width": 8,
-      "text-padding": 2,
-      "text-rotation-alignment": "viewport",
-      "text-size": ["interpolate", ["linear"], ["zoom"], 17, 10, 20, 12],
-      visibility: "visible",
+      "text-justify": "auto",
+      "text-line-height": 0,
+      "text-padding": 5,
+      "text-rotation-alignment": "auto",
+      "text-size": [
+        "interpolate",
+        ["exponential", 1.5],
+        ["zoom"],
+        16.5,
+        20,
+        24,
+        30,
+      ],
     },
-    minzoom: 17,
+    minzoom: 16.5,
     paint: {
       "text-color": "#072140",
       "text-halo-color": "rgb(194, 215, 239, 0.3)",
@@ -621,13 +641,100 @@ export const defaultLayers: Array<LayerSpecification> = [
         "interpolate",
         ["linear"],
         ["zoom"],
-        18,
+        17.5,
         0,
-        18.5,
+        18,
         0.5,
         19,
         1,
       ],
+    },
+    source: "indoor",
+    type: "symbol",
+  },
+  {
+    filter: [
+      "all",
+      [
+        "any",
+        ["==", ["get", "entrance"], "exit"],
+        ["==", ["get", "entrance"], "emergency"],
+      ],
+    ],
+    id: "poi-exterior-exit-bg",
+    minzoom: 18,
+    paint: {
+      "circle-color": "rgba(255, 255, 255, 1)",
+      "circle-opacity": ["interpolate", ["linear"], ["zoom"], 18, 0, 18.5, 0.8],
+      "circle-radius": 10,
+    },
+    source: "indoor",
+    type: "circle",
+  },
+  {
+    filter: [
+      "all",
+      [
+        "any",
+        ["==", ["get", "entrance"], "exit"],
+        ["==", ["get", "entrance"], "emergency"],
+      ],
+    ],
+    id: "poi-exterior-exit",
+    layout: {
+      "icon-image": "entrance-alt1",
+    },
+    minzoom: 18,
+    paint: {
+      "icon-opacity": ["interpolate", ["linear"], ["zoom"], 18, 0, 18.5, 1],
+    },
+    source: "indoor",
+    type: "symbol",
+  },
+  {
+    filter: [
+      "all",
+      ["has", "entrance"],
+      ["!=", ["get", "entrance"], "exit"],
+      ["!=", ["get", "entrance"], "emergency"],
+    ],
+    id: "poi-exterior-entrance-bg",
+    minzoom: 16,
+    paint: {
+      "circle-color": "rgba(255, 255, 255, 1)",
+      "circle-opacity": ["interpolate", ["linear"], ["zoom"], 16, 0, 16.5, 1],
+      "circle-radius": 10,
+    },
+    source: "indoor",
+    type: "circle",
+  },
+  {
+    filter: ["has", "building"],
+    id: "buildings-walls",
+    minzoom: 16.5,
+    paint: {
+      "line-color": "#FFFFFF",
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
+      "line-width": 2,
+    },
+    source: "indoor",
+    type: "line",
+  },
+  {
+    filter: [
+      "all",
+      ["has", "entrance"],
+      ["!=", ["get", "entrance"], "exit"],
+      ["!=", ["get", "entrance"], "emergency"],
+    ],
+    id: "poi-exterior-entrance",
+    layout: {
+      "icon-image": "prison",
+      "text-font": [],
+    },
+    minzoom: 16,
+    paint: {
+      "icon-opacity": ["interpolate", ["linear"], ["zoom"], 16, 0, 16.5, 1],
     },
     source: "indoor",
     type: "symbol",
@@ -664,7 +771,6 @@ export const defaultLayers: Array<LayerSpecification> = [
       "text-padding": 2,
       "text-rotation-alignment": "viewport",
       "text-size": ["interpolate", ["linear"], ["zoom"], 17, 11, 20, 13],
-      visibility: "visible",
     },
     minzoom: 17,
     paint: {
@@ -698,45 +804,46 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "symbol",
   },
   {
-    filter: [
-      "all",
-      [
-        "any",
-        ["==", ["get", "entrance"], "exit"],
-        ["==", ["get", "entrance"], "emergency"],
+    filter: ["==", ["get", "amenity"], "toilets"],
+    id: "poi-indoor-toilet",
+    layout: {
+      "icon-allow-overlap": true,
+      "icon-anchor": "center",
+      "icon-image": [
+        "case",
+        ["==", ["get", "wheelchair"], "yes"],
+        ["literal", "wheelchair"],
+        [
+          "all",
+          ["==", ["get", "female"], "yes"],
+          ["!=", ["get", "male"], "yes"],
+        ],
+        ["literal", "toilet_female"],
+        [
+          "all",
+          ["!=", ["get", "female"], "yes"],
+          ["==", ["get", "male"], "yes"],
+        ],
+        ["literal", "toilet_male"],
+        ["literal", "toilet"],
       ],
-    ],
-    id: "poi-exterior-exit",
-    layout: {
-      "icon-image": "entrance_11",
+      "icon-size": ["interpolate", ["linear"], ["zoom"], 17, 0.5, 20, 1],
     },
-    source: "indoor",
-    type: "symbol",
-  },
-  {
-    filter: [
-      "all",
-      ["has", "entrance"],
-      ["!=", ["get", "entrance"], "exit"],
-      ["!=", ["get", "entrance"], "emergency"],
-    ],
-    id: "poi-exterior-entrance",
-    layout: {
-      "icon-image": "aquarium_11",
-      "text-font": [],
-    },
-    source: "indoor",
-    type: "symbol",
-  },
-  {
-    filter: ["has", "building"],
-    id: "buildings-walls",
+    minzoom: 17,
     paint: {
-      "line-color": "#FFFFFF",
-      "line-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
-      "line-width": 2,
+      "icon-opacity": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        17,
+        0,
+        17.5,
+        0.5,
+        19,
+        1,
+      ],
     },
     source: "indoor",
-    type: "line",
+    type: "symbol",
   },
 ];
