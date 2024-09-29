@@ -604,7 +604,18 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "line",
   },
   {
-    filter: ["==", ["get", "indoor"], "room"],
+    filter: [
+      "all",
+      [
+        "!",
+        [
+          "in",
+          ["get", "amenity"],
+          ["literal", ["toilet", "toilets", "shower", "showers"]],
+        ],
+      ],
+      ["==", ["get", "indoor"], "room"],
+    ],
     id: "poi-indoor-text-ref",
     layout: {
       "text-allow-overlap": false,
@@ -749,13 +760,19 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "symbol",
   },
   {
-    filter: ["==", ["get", "amenity"], "toilets"],
-    id: "poi-indoor-toilet",
+    filter: [
+      "in",
+      ["get", "amenity"],
+      ["literal", ["toilets", "shower", "showers"]],
+    ],
+    id: "poi-indoor-bathrooms",
     layout: {
       "icon-allow-overlap": true,
       "icon-anchor": "center",
       "icon-image": [
         "case",
+        ["in", ["get", "amenity"], ["literal", ["shower", "showers"]]],
+        ["literal", "noun-shower-51"],
         ["==", ["get", "wheelchair"], "yes"],
         ["literal", "wheelchair"],
         [
