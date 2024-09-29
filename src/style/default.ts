@@ -267,12 +267,11 @@ export const defaultLayers: Array<LayerSpecification> = [
     type: "circle",
   },
   {
-    filter:
-      [
-        "any",
-        ["==", ["get", "elevator"], "yes"],
-        ["==", ["get", "highway"], "elevator"],
-      ],
+    filter: [
+      "any",
+      ["==", ["get", "elevator"], "yes"],
+      ["==", ["get", "highway"], "elevator"],
+    ],
     id: "indoor-elevators-logo",
     layout: {
       "icon-allow-overlap": true,
