@@ -287,15 +287,7 @@ export const defaultLayers: Array<LayerSpecification> = [
       ],
     },
     paint: {
-      "icon-opacity": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        16.5,
-        0,
-        18,
-        1
-      ],
+      "icon-opacity": ["interpolate", ["linear"], ["zoom"], 16.5, 0, 18, 1],
     },
     source: "indoor",
     type: "symbol",
@@ -692,7 +684,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     ],
     id: "poi-exterior-exit",
     layout: {
-      "icon-image": "entrance-alt1",
+      "icon-image": "exit-alt1",
     },
     minzoom: 18,
     paint: {
@@ -739,7 +731,7 @@ export const defaultLayers: Array<LayerSpecification> = [
     ],
     id: "poi-exterior-entrance",
     layout: {
-      "icon-image": "prison",
+      "icon-image": "entrance-alt1",
       "text-font": [],
     },
     minzoom: 16,
