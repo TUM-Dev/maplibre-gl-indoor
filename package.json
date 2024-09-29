@@ -9,7 +9,7 @@
     "dist/*",
     "src/"
   ],
-  "version": "0.0.17",
+  "version": "0.0.18",
   "scripts": {
     "test": "jest .",
     "lint": "eslint src --fix && tsc --noEmit && prettier --write .",

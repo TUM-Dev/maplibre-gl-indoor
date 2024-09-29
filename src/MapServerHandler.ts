@@ -16,7 +16,7 @@ type RemoteMap = {
   url: string;
 };
 
-const MIN_ZOOM_TO_DOWNLOAD = 16.5;
+const MIN_ZOOM_TO_DOWNLOAD = 16.25;
 const MIN_DISTANCE_TO_DOWNLOAD_METERS = 200;
 
 class MapServerHandler {
@@ -89,7 +89,7 @@ class MapServerHandler {
       viewPort.getSouthEast().toArray(),
       { units: "meters" },
     );
-    // It is not necessary to compute others as we are at zoom >= 17, the approximation is enough.
+    // It is not necessary to compute others as we are at zoom >= 16.25, the approximation is enough.
     const maxXYViewportDistanceMeters =
       Math.max(distanceEastWestMeters, distanceNorthSouthMeters) / 2;
     const verticalDistanceMeters = Math.max(

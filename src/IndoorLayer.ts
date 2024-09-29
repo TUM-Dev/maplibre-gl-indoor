@@ -72,7 +72,7 @@ export default class IndoorLayer {
 
   _closestMap() {
     // TODO enhance this condition
-    if (this._map.getZoom() < 17) {
+    if (this._map.getZoom() < 16.5) {
       return null;
     }
 

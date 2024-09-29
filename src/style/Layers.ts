@@ -39,7 +39,6 @@ const OSM_FILTER_MAPBOX_MAKI_LIST: FilterMakiEntry[] = [
     maki: "bank",
   },
   { filter: ["==", ["get", "natural"], "tree"], maki: "park" },
-  { filter: ["==", ["get", "highway"], "steps"], maki: "entrance" },
   ...OSM_SHOPS.map(
     ({ maki, shop }) =>
       ({ filter: ["==", ["get", "shop"], shop], maki }) as FilterMakiEntry,
