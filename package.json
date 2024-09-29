@@ -9,10 +9,11 @@
     "dist/*",
     "src/"
   ],
-  "version": "0.0.19",
+  "version": "0.0.20",
   "scripts": {
     "test": "jest .",
     "lint": "eslint src --fix && tsc --noEmit && prettier --write .",
+    "fmt": "npm run lint",
     "build": "rm -fr dist && npm run build-lib && npm run build-dts",
     "prepublishOnly": "npm run lint && npm test && npm run build",
     "build-lib": "tsc && vite build --emptyOutDir -c vite.lib.config.js",
