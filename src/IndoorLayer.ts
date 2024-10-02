@@ -180,6 +180,7 @@ export default class IndoorLayer {
     // Add map source
     this._map.addSource(SOURCE_ID, {
       data: geojson,
+      lineMetrics: true,
       type: "geojson",
     });
 

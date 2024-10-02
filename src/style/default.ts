@@ -414,7 +414,15 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
     minzoom: 17,
     paint: {
-      "line-color": "rgba(255, 252, 252, 0.8)",
+      "line-gradient": [
+        "interpolate",
+        ["linear"],
+        ["line-progress"],
+        0,
+        "rgba(255, 252, 252, 0)",
+        1,
+        "rgba(255, 252, 252, 0.8)",
+      ],
       "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.25, 1],
       "line-width": [
         "interpolate",
@@ -441,7 +449,6 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
     minzoom: 17,
     paint: {
-      "line-color": "rgba(0, 0, 0, 1)",
       "line-gap-width": [
         "interpolate",
         ["exponential", 2],
@@ -450,6 +457,15 @@ export const defaultLayers: Array<LayerSpecification> = [
         ["*", 1, ["^", 2, -6]],
         24,
         ["*", 1, ["^", 2, 8]],
+      ],
+      "line-gradient": [
+        "interpolate",
+        ["linear"],
+        ["line-progress"],
+        0,
+        "rgba(0,0,0,0)",
+        1,
+        "rgba(0,0,0,1)",
       ],
       "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.25, 1],
       "line-width": [
@@ -470,43 +486,6 @@ export const defaultLayers: Array<LayerSpecification> = [
       "all",
       ["all", ["==", ["get", "highway"], "steps"], ["!", ["has", "conveying"]]],
     ],
-    id: "indoor-steps-black",
-    layout: {
-      "line-join": "round",
-    },
-    minzoom: 17,
-    paint: {
-      "line-color": "rgba(0, 0, 0, 1)",
-      "line-dasharray": [
-        "step",
-        ["zoom"],
-        ["literal", [0, 1]],
-        20,
-        ["literal", [0.1, 0.4]],
-        21,
-        ["literal", [0.1, 0.3]],
-        22,
-        ["literal", [0.05, 0.2]],
-      ],
-      "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.25, 1],
-      "line-width": [
-        "interpolate",
-        ["exponential", 2],
-        ["zoom"],
-        10,
-        ["*", 1, ["^", 2, -6]],
-        24,
-        ["*", 1, ["^", 2, 8]],
-      ],
-    },
-    source: "indoor",
-    type: "line",
-  },
-  {
-    filter: [
-      "all",
-      ["all", ["==", ["get", "highway"], "steps"], ["!", ["has", "conveying"]]],
-    ],
     id: "indoor-steps-middle",
     layout: {
       "line-cap": "round",
@@ -514,7 +493,15 @@ export const defaultLayers: Array<LayerSpecification> = [
     },
     minzoom: 17,
     paint: {
-      "line-color": "rgba(22, 93, 177, 0.4)",
+      "line-gradient": [
+        "interpolate",
+        ["linear"],
+        ["line-progress"],
+        0,
+        "rgba(0,0,0,0)",
+        1,
+        "rgba(22, 93, 177, 0.4)",
+      ],
       "line-opacity": ["interpolate", ["linear"], ["zoom"], 17, 0, 17.25, 1],
       "line-width": [
         "interpolate",
