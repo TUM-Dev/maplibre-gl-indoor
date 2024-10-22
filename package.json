@@ -35,7 +35,7 @@
   "author": "Thibaud Michel, modified by Frank Elsinga",
   "license": "MIT",
   "devDependencies": {
-    "@maplibre/maplibre-gl-style-spec": "20.3.1",
+    "@maplibre/maplibre-gl-style-spec": "21.0.0",
     "@eslint/js": "9.11.1",
     "@types/eslint__js": "8.42.3",
     "@types/geojson": "7946.0.14",
