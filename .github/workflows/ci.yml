@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 9.5.0
+          version: 10.33.4
           package_json_file: package.json
           run_install: |
             - args: [--frozen-lockfile, --strict-peer-dependencies]
@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-node@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 9.5.0
+          version: 10.33.4
           package_json_file: package.json
           run_install: |
             - args: [--frozen-lockfile, --strict-peer-dependencies]
@@ -52,7 +52,7 @@ jobs:
       - uses: actions/setup-node@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 9.5.0
+          version: 10.33.4
           package_json_file: package.json
           run_install: |
             - args: [--frozen-lockfile, --strict-peer-dependencies]
